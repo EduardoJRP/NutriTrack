@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const NavBar = () => {
   const [searchValue, setSearchValue] = useState('');
 
   return (
     <div className="flex flex-row items-center bg-orange-400 place-content-between p-4 ">
-      <div className="flex flex-row items-center">
-        <Image
-          src={'/gato.jpg'}
-          alt={'Logo of the app'}
-          width={50}
-          height={30}
-        />
-        <h1 className="ml-2">Calories App</h1>
-      </div>
+      <Link href="/">
+        <div className="flex flex-row items-center">
+          <Image
+            src={'/gato.jpg'}
+            alt={'Logo of the app'}
+            width={50}
+            height={30}
+          />
+          <h1 className="ml-2">Calories App</h1>
+        </div>
+      </Link>
       <div className="flex flex-row items-center">
         <input
           type="text"
@@ -42,24 +45,26 @@ const NavBar = () => {
         </button>
       </div>
       <div>
-        <div className='flex flex-row '>
-          <button className='p-5'>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="size-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-              />
-            </svg>
-          </button>
-          <button className='p-5'>
+        <div className="flex flex-row ">
+          <Link href='/addItem'>
+            <button className="p-5">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+            </button>
+          </Link>
+          <button className="p-5">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
