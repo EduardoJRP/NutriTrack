@@ -12,3 +12,14 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+// Use only grams for storage
+model Item_Macro {
+  name String
+  id Int @id @default(autoincrement())
+  quantity Int //Store quantity in grams
+  calories     Decimal  @db.Decimal(10, 2) // Precision for calorie count
+  carbohydrates Decimal  @db.Decimal(10, 2) // Precision for carbs (e.g., grams)
+  fats         Decimal  @db.Decimal(10, 2) // Precision for fats (e.g., grams)
+  protein      Decimal  @db.Decimal(10, 2) // Precision for protein (e.g., grams)
+}
