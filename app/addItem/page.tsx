@@ -1,14 +1,15 @@
 "use client";
 
 import NavBar from "../components/NavBar";
+import AddItemForm from "../components/AddItemForm";
 
 export default function AddItem() {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <NavBar></NavBar>
-      <h1>
-        Hi, I am the add Item Page
-      </h1>
+      <div className="flex flex-grow items-center justify-center">
+        <AddItemForm></AddItemForm>
+      </div>
     </div>
   )
 }
