@@ -7,7 +7,7 @@ export default function AddItem() {
   return (
     <div className="min-h-screen flex flex-col">
       <NavBar></NavBar>
-      <div className="flex flex-grow items-center justify-center">
+      <div className="flex flex-grow items-center justify-center w-full">
         <AddItemForm></AddItemForm>
       </div>
     </div>
