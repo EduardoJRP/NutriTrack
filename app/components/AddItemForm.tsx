@@ -50,80 +50,82 @@ export default function AddItemForm() {
   };
 
   return (
-    <div>
-      <div className="bg-orange-300 rounded-xl p-5 max-w-lg">
-        <h1 className="text-xl font-bold">Add the info of the item</h1>
-        <div className="flex flex-col w-full">
-          <label className="flex flex-col w-full p-3">
-            <span className="font-semibold text-lg">Name of the food</span>
-            <input
-              name="name"
-              type="text"
-              placeholder="e.g. Egg"
-              value={formData.name}
-              onChange={handleChange}
-              className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
-            />
-          </label>
-          <label className="flex flex-col w-full p-3">
-            <span className="font-semibold text-lg">Grams</span>
-            <input
-              name="grams"
-              type="number"
-              placeholder="100"
-              value={formData.grams}
-              onChange={handleChange}
-              className="no-arrows border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
-            />
-          </label>
-          <label className="flex flex-col w-full p-3">
-            <span className="font-semibold text-lg">Calories</span>
-            <input
-              name="calories"
-              type="number"
-              placeholder="200"
-              value={formData.calories}
-              onChange={handleChange}
-              className="no-arrows border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
-            />
-          </label>
-          <label className="flex flex-col w-full p-3">
-            <span className="font-semibold text-lg">Carbohydrates</span>
-            <input
-              name="carbohydrates"
-              type="number"
-              placeholder="18.1"
-              value={formData.carbohydrates}
-              onChange={handleChange}
-              className="no-arrows border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
-            />
-          </label>
-          <label className="flex flex-col w-full p-3">
-            <span className="font-semibold text-lg">Fats</span>
-            <input
-              name="fats"
-              type="number"
-              placeholder="18.1"
-              value={formData.fats}
-              onChange={handleChange}
-              className="no-arrows border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
-            />
-          </label>
-          <label className="flex flex-col w-full p-3">
-            <span className="font-semibold text-lg">Proteins</span>
-            <input
-              name="proteins"
-              type="number"
-              placeholder="18.1"
-              value={formData.proteins}
-              onChange={handleChange}
-              className="no-arrows border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
-            />
-          </label>
-          <button type="submit" onClick={handleSubmit} className='w-full bg-orange-500 text-white font-semibold rounded-lg py-2 px-4 mt-4 hover:bg-orange-600 transition-all'>
-            Submit!
-          </button>
-        </div>
+    <div className="bg-orange-300 rounded-xl p-5 max-w-lg w-full">
+      <h1 className="text-xl font-bold">Add the info of the item</h1>
+      <div className="flex flex-col w-full">
+        <label className="flex flex-col w-full p-3">
+          <span className="font-semibold text-lg">Name of the food</span>
+          <input
+            name="name"
+            type="text"
+            placeholder="e.g. Egg"
+            value={formData.name}
+            onChange={handleChange}
+            className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
+          />
+        </label>
+        <label className="flex flex-col w-full p-3">
+          <span className="font-semibold text-lg">Grams</span>
+          <input
+            name="grams"
+            type="number"
+            placeholder="100"
+            value={formData.grams}
+            onChange={handleChange}
+            className="no-arrows border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
+          />
+        </label>
+        <label className="flex flex-col w-full p-3">
+          <span className="font-semibold text-lg">Calories</span>
+          <input
+            name="calories"
+            type="number"
+            placeholder="200"
+            value={formData.calories}
+            onChange={handleChange}
+            className="no-arrows border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
+          />
+        </label>
+        <label className="flex flex-col w-full p-3">
+          <span className="font-semibold text-lg">Carbohydrates</span>
+          <input
+            name="carbohydrates"
+            type="number"
+            placeholder="18.1"
+            value={formData.carbohydrates}
+            onChange={handleChange}
+            className="no-arrows border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
+          />
+        </label>
+        <label className="flex flex-col w-full p-3">
+          <span className="font-semibold text-lg">Fats</span>
+          <input
+            name="fats"
+            type="number"
+            placeholder="18.1"
+            value={formData.fats}
+            onChange={handleChange}
+            className="no-arrows border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
+          />
+        </label>
+        <label className="flex flex-col w-full p-3">
+          <span className="font-semibold text-lg">Proteins</span>
+          <input
+            name="proteins"
+            type="number"
+            placeholder="18.1"
+            value={formData.proteins}
+            onChange={handleChange}
+            className="no-arrows border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
+          />
+        </label>
+        <button
+          type="submit"
+          onClick={handleSubmit}
+          className="w-full bg-orange-500 text-white font-semibold rounded-lg py-2 px-4 mt-4 hover:bg-orange-600 transition-all"
+        >
+          Submit!
+        </button>
       </div>
     </div>
   );
