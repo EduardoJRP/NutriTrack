@@ -27,26 +27,48 @@ export default function AddItemForm() {
     }));
   };
 
-  const handleSubmit = (e: React.MouseEvent<HTMLElement>) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
 
+    // Trim the name field
     const trimmedName = formData.name.trim();
 
-    setFormData((prepFormData) => ({
-      ...prepFormData,
+    // Update the formData with the trimmed name
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       name: trimmedName,
     }));
 
+    // Log the submission data
     console.log('Form submitted:', { ...formData, name: trimmedName });
 
-    setFormData({
-      name: '',
-      grams: 0,
-      calories: 0,
-      carbohydrates: 0,
-      fats: 0,
-      proteins: 0,
-    });
+    // Send the data to the backend
+    try {
+      const response = await fetch('/api/submitForm', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...formData, name: trimmedName }),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        // Clear the form data on successful submission
+        setFormData({
+          name: '',
+          grams: 0,
+          calories: 0,
+          carbohydrates: 0,
+          fats: 0,
+          proteins: 0,
+        });
+      } else {
+        console.error('Error submitting form:', result.error);
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
   };
 
   return (
