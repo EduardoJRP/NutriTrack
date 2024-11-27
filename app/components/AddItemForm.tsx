@@ -1,3 +1,4 @@
+import { Decimal } from '@prisma/client/runtime/library';
 import React, { useState } from 'react';
 
 interface FormData {
