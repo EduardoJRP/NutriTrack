@@ -1,9 +1,8 @@
-import { Decimal } from '@prisma/client/runtime/library';
 import React, { useState } from 'react';
 
 interface FormData {
   name: string;
-  grams: number;
+  quantity: number;
   calories: number;
   carbohydrates: number;
   fats: number;
@@ -13,7 +12,7 @@ interface FormData {
 export default function AddItemForm() {
   const [formData, setFormData] = useState<FormData>({
     name: '',
-    grams: 0,
+    quantity: 0,
     calories: 0,
     carbohydrates: 0,
     fats: 0,
@@ -58,7 +57,7 @@ export default function AddItemForm() {
         // Clear the form data on successful submission
         setFormData({
           name: '',
-          grams: 0,
+          quantity: 0,
           calories: 0,
           carbohydrates: 0,
           fats: 0,
@@ -90,10 +89,10 @@ export default function AddItemForm() {
         <label className="flex flex-col w-full p-3">
           <span className="font-semibold text-lg">Grams</span>
           <input
-            name="grams"
+            name="quantity"
             type="number"
             placeholder="100"
-            value={formData.grams}
+            value={formData.quantity}
             onChange={handleChange}
             className="no-arrows border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
           />

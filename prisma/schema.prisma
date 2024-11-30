@@ -21,5 +21,5 @@ model Item_Macro {
   calories     Float // Precision for calorie count
   carbohydrates Float // Precision for carbs (e.g., grams)
   fats         Float // Precision for fats (e.g., grams)
-  protein      Float // Precision for protein (e.g., grams)
+  proteins      Float // Precision for protein (e.g., grams)
 }
