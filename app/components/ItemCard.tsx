@@ -2,21 +2,29 @@ import React from 'react';
 
 interface ItemCardProps {
   name: string;
+  id: number;
   quantity: number;
   calories: number;
   carbohydrates: number;
   proteins: number;
   fats: number;
+  onDelete: (id: number) => void;
 }
 
 export default function ItemCard({
   name,
+  id,
   quantity,
   calories,
   carbohydrates,
   proteins,
   fats,
+  onDelete,
 }: ItemCardProps) {
+  const handleDelete = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    onDelete(id);
+  };
   return (
     <div className="flex flex-row">
       <div className="w-full rounded-lg border border-gray-200 bg-white p-4 shadow-md">
@@ -29,7 +37,10 @@ export default function ItemCard({
           <div>Fats: {fats}</div>
         </div>
       </div>
-      <button className="w-1/8 bg-orange-500 text-white font-semibold rounded-lg py-2 px-4 m-4 hover:bg-orange-600 transition-all">
+      <button
+        className="w-1/8 bg-orange-500 text-white font-semibold rounded-lg py-2 px-4 m-4 hover:bg-orange-600 transition-all"
+        onClick={handleDelete}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

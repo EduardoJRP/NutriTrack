@@ -3,6 +3,7 @@ import ItemCard from './ItemCard';
 
 interface ItemData {
   name: string;
+  id: number;
   quantity: number;
   calories: number;
   carbohydrates: number;
@@ -30,21 +31,39 @@ export default function ItemList() {
     fetchItems();
   }, []);
 
-  useEffect(() => {
-    console.log(items);
-  }, [items]);
+  const handleDelete = async (id: number) => {
+    try {
+      const response = await fetch(`/api/deleteItem/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        setItems((prevItems) => prevItems.filter((item) => item.id !== id));
+        alert('Item deleted successfully');
+      } else {
+        const errorData = await response.json();
+        console.error('Failed to delete item:', errorData);
+        alert('Failed to delete the item.');
+      }
+    } catch (error) {
+      console.error('Error deleting item:', error);
+      alert('An error occurred while deleting the item.');
+    }
+  };
 
   return (
     <div className="space-y-4">
-      {items.map((item, index) => (
+      {items.map((item) => (
         <ItemCard
-          key={index}
+          key={item.id}
           name={item.name}
+          id={item.id}
           quantity={item.quantity}
           calories={item.calories}
           carbohydrates={item.carbohydrates}
           proteins={item.proteins}
           fats={item.fats}
+          onDelete={handleDelete}
         />
       ))}
     </div>
