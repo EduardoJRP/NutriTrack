@@ -1,16 +1,8 @@
 import React, { useState } from 'react';
-
-interface FormData {
-  name: string;
-  quantity: number;
-  calories: number;
-  carbohydrates: number;
-  fats: number;
-  proteins: number;
-}
+import { ItemData } from '../types/item';
 
 export default function AddItemForm() {
-  const [formData, setFormData] = useState<FormData>({
+  const [ItemData, setItemData] = useState<ItemData>({
     name: '',
     quantity: 0,
     calories: 0,
@@ -21,8 +13,8 @@ export default function AddItemForm() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
+    setItemData((prevItemData) => ({
+      ...prevItemData,
       [name]: type === 'number' && name !== 'grams' ? parseFloat(value) : value,
     }));
   };
@@ -31,16 +23,16 @@ export default function AddItemForm() {
     e.preventDefault();
 
     // Trim the name field
-    const trimmedName = formData.name.trim();
+    const trimmedName = ItemData.name.trim();
 
-    // Update the formData with the trimmed name
-    setFormData((prevFormData) => ({
-      ...prevFormData,
+    // Update the ItemData with the trimmed name
+    setItemData((prevItemData) => ({
+      ...prevItemData,
       name: trimmedName,
     }));
 
     // Log the submission data
-    console.log('Form submitted:', { ...formData, name: trimmedName });
+    console.log('Form submitted:', { ...ItemData, name: trimmedName });
 
     // Send the data to the backend
     try {
@@ -49,13 +41,13 @@ export default function AddItemForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...formData, name: trimmedName }),
+        body: JSON.stringify({ ...ItemData, name: trimmedName }),
       });
 
       const result = await response.json();
       if (result.success) {
         // Clear the form data on successful submission
-        setFormData({
+        setItemData({
           name: '',
           quantity: 0,
           calories: 0,
@@ -81,7 +73,7 @@ export default function AddItemForm() {
             name="name"
             type="text"
             placeholder="e.g. Egg"
-            value={formData.name}
+            value={ItemData.name}
             onChange={handleChange}
             className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
@@ -92,7 +84,7 @@ export default function AddItemForm() {
             name="quantity"
             type="number"
             placeholder="100"
-            value={formData.quantity}
+            value={ItemData.quantity}
             onChange={handleChange}
             className="no-arrows border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
@@ -103,7 +95,7 @@ export default function AddItemForm() {
             name="calories"
             type="number"
             placeholder="200"
-            value={formData.calories}
+            value={ItemData.calories}
             onChange={handleChange}
             className="no-arrows border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
@@ -114,7 +106,7 @@ export default function AddItemForm() {
             name="carbohydrates"
             type="number"
             placeholder="18.1"
-            value={formData.carbohydrates}
+            value={ItemData.carbohydrates}
             onChange={handleChange}
             className="no-arrows border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
@@ -125,7 +117,7 @@ export default function AddItemForm() {
             name="fats"
             type="number"
             placeholder="18.1"
-            value={formData.fats}
+            value={ItemData.fats}
             onChange={handleChange}
             className="no-arrows border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
@@ -136,7 +128,7 @@ export default function AddItemForm() {
             name="proteins"
             type="number"
             placeholder="18.1"
-            value={formData.proteins}
+            value={ItemData.proteins}
             onChange={handleChange}
             className="no-arrows border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
