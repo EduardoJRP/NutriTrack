@@ -1,16 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ItemCard from './ItemCard';
 import UpdateModal from './Modals/UpdateItemModal';
-
-interface ItemData {
-  name: string;
-  id: number;
-  quantity: number;
-  calories: number;
-  carbohydrates: number;
-  fats: number;
-  proteins: number;
-}
+import { ItemData } from '../types/item';
 
 export default function ItemList() {
   const [items, setItems] = useState<ItemData[]>([]);
@@ -115,7 +106,10 @@ export default function ItemList() {
       {currentItem && (
         <UpdateModal
           isOpen={isModalOpen}
-          onClose={() => setModalOpen(false)}
+          onClose={() => {
+            setModalOpen(false) 
+            setCurrentItem(null)
+          }}
           item={currentItem}
           onUpdate={handleModalUpdate}
         />

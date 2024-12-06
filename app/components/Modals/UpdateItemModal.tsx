@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ItemData } from '../../types/item';
 
 interface UpdateModalProps {
   isOpen: boolean;
@@ -12,7 +13,7 @@ interface UpdateModalProps {
     proteins: number;
     fats: number;
   };
-  onUpdate: (updatedItem: typeof item) => void;
+  onUpdate: (updatedItem: ItemData) => void;
 }
 
 export default function UpdateModal({
@@ -31,7 +32,15 @@ export default function UpdateModal({
   };
 
   const handleSubmit = () => {
-    onUpdate(formData);
+    const updatedItem = {
+      ...formData,
+      quantity: Number(formData.quantity),
+      calories: Number(formData.calories),
+      carbohydrates: Number(formData.carbohydrates),
+      fats: Number(formData.fats),
+      proteins: Number(formData.proteins),
+    };
+    onUpdate(updatedItem);
     onClose();
   };
 
@@ -61,7 +70,7 @@ export default function UpdateModal({
           <input
             type="number"
             name="calories"
-            value={formData.quantity}
+            value={formData.calories}
             onChange={handleChange}
             className="w-full p-2 border rounded"
             placeholder="Calories"
@@ -69,7 +78,7 @@ export default function UpdateModal({
           <input
             type="number"
             name="carbohydrates"
-            value={formData.quantity}
+            value={formData.carbohydrates}
             onChange={handleChange}
             className="w-full p-2 border rounded"
             placeholder="Carbohydrates"
@@ -77,7 +86,7 @@ export default function UpdateModal({
           <input
             type="number"
             name="fats"
-            value={formData.quantity}
+            value={formData.fats}
             onChange={handleChange}
             className="w-full p-2 border rounded"
             placeholder="Fats"
@@ -85,7 +94,7 @@ export default function UpdateModal({
           <input
             type="number"
             name="proteins"
-            value={formData.quantity}
+            value={formData.proteins}
             onChange={handleChange}
             className="w-full p-2 border rounded"
             placeholder="Proteins"
