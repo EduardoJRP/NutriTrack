@@ -27,14 +27,11 @@ export async function DELETE(
     });
 
     return NextResponse.json({ success: true, data: deletedItem });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error during DELETE operation:", error);
 
-    // Generic error handling with a type guard
-    const isRecordNotFoundError = (e: unknown): e is { code: string } =>
-      typeof e === "object" && e !== null && "code" in e && (e as any).code === "P2025";
-
-    if (isRecordNotFoundError(error)) {
+    // Directly check for the Prisma error code
+    if ((error as { code?: string }).code === "P2025") {
       return NextResponse.json(
         { success: false, error: "Item not found" },
         { status: 404 }

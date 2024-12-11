@@ -15,7 +15,7 @@ const NavBar = () => {
             width={50}
             height={30}
           />
-          <h1 className="ml-2">Calories App</h1>
+          <h1 className="ml-2">Calories Cat</h1>
         </div>
       </Link>
       <div className="flex flex-row items-center">
@@ -46,7 +46,7 @@ const NavBar = () => {
       </div>
       <div>
         <div className="flex flex-row ">
-          <Link href='/addItem'>
+          <Link href="/addItem">
             <button className="p-5">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +64,7 @@ const NavBar = () => {
               </svg>
             </button>
           </Link>
-          <Link href='/itemList'>
+          <Link href="/itemList">
             <button className="p-5">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
