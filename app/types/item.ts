@@ -1,5 +1,5 @@
 export interface ItemData {
-    id?: number;
+    id: number;
     name: string;
     quantity: number;
     calories: number;
