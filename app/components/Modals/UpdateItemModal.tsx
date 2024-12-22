@@ -1,18 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { ItemData } from '../../types/item';
 
 interface UpdateModalProps {
   isOpen: boolean;
   onClose: () => void;
-  item: {
-    id: number;
-    name: string;
-    quantity: number;
-    calories: number;
-    carbohydrates: number;
-    proteins: number;
-    fats: number;
-  };
+  item: ItemData;
   onUpdate: (updatedItem: ItemData) => void;
 }
 
@@ -22,16 +14,16 @@ export default function UpdateModal({
   item,
   onUpdate,
 }: UpdateModalProps) {
-  const [formData, setFormData] = useState({ ...item });
+  const [formData, setFormData] = useState<ItemData>({ ...item });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
-  };
+  }, [formData]);
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     const updatedItem = {
       ...formData,
       quantity: Number(formData.quantity),
@@ -42,7 +34,7 @@ export default function UpdateModal({
     };
     onUpdate(updatedItem);
     onClose();
-  };
+  }, [formData, onUpdate, onClose]);
 
   if (!isOpen) return null;
 
@@ -50,7 +42,7 @@ export default function UpdateModal({
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-lg font-bold mb-4">Update Item</h2>
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
           <input
             type="text"
             name="name"
@@ -58,6 +50,7 @@ export default function UpdateModal({
             onChange={handleChange}
             className="w-full p-2 border rounded"
             placeholder="Name"
+            required
           />
           <input
             type="number"
@@ -66,6 +59,7 @@ export default function UpdateModal({
             onChange={handleChange}
             className="w-full p-2 border rounded"
             placeholder="Quantity (g)"
+            required
           />
           <input
             type="number"
@@ -74,6 +68,7 @@ export default function UpdateModal({
             onChange={handleChange}
             className="w-full p-2 border rounded"
             placeholder="Calories"
+            required
           />
           <input
             type="number"
@@ -82,6 +77,7 @@ export default function UpdateModal({
             onChange={handleChange}
             className="w-full p-2 border rounded"
             placeholder="Carbohydrates"
+            required
           />
           <input
             type="number"
@@ -90,6 +86,7 @@ export default function UpdateModal({
             onChange={handleChange}
             className="w-full p-2 border rounded"
             placeholder="Fats"
+            required
           />
           <input
             type="number"
@@ -98,6 +95,7 @@ export default function UpdateModal({
             onChange={handleChange}
             className="w-full p-2 border rounded"
             placeholder="Proteins"
+            required
           />
         </form>
         <div className="flex justify-end space-x-4 mt-4">

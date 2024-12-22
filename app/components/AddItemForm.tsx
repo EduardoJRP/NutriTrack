@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { ItemData } from '../types/item';
+import { NewItemData } from '../types/item';
 
 export default function AddItemForm() {
-  const [ItemData, setItemData] = useState<ItemData>({
+  const [itemData, setItemData] = useState<NewItemData>({
     name: '',
     quantity: 0,
     calories: 0,
@@ -22,17 +22,14 @@ export default function AddItemForm() {
   const handleSubmit = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
 
-    // Trim the name field
-    const trimmedName = ItemData.name.trim();
-
-    // Update the ItemData with the trimmed name
+    const trimmedName = itemData.name.trim();
     setItemData((prevItemData) => ({
       ...prevItemData,
       name: trimmedName,
     }));
 
     // Log the submission data
-    console.log('Form submitted:', { ...ItemData, name: trimmedName });
+    console.log('Form submitted:', { ...itemData, name: trimmedName });
 
     // Send the data to the backend
     try {
@@ -41,7 +38,7 @@ export default function AddItemForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...ItemData, name: trimmedName }),
+        body: JSON.stringify({ ...itemData, name: trimmedName }),
       });
 
       const result = await response.json();
@@ -73,7 +70,7 @@ export default function AddItemForm() {
             name="name"
             type="text"
             placeholder="e.g. Egg"
-            value={ItemData.name}
+            value={itemData.name}
             onChange={handleChange}
             className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
@@ -84,7 +81,7 @@ export default function AddItemForm() {
             name="quantity"
             type="number"
             placeholder="100"
-            value={ItemData.quantity}
+            value={itemData.quantity}
             onChange={handleChange}
             className="no-arrows border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
@@ -95,7 +92,7 @@ export default function AddItemForm() {
             name="calories"
             type="number"
             placeholder="200"
-            value={ItemData.calories}
+            value={itemData.calories}
             onChange={handleChange}
             className="no-arrows border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
@@ -106,7 +103,7 @@ export default function AddItemForm() {
             name="carbohydrates"
             type="number"
             placeholder="18.1"
-            value={ItemData.carbohydrates}
+            value={itemData.carbohydrates}
             onChange={handleChange}
             className="no-arrows border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
@@ -117,7 +114,7 @@ export default function AddItemForm() {
             name="fats"
             type="number"
             placeholder="18.1"
-            value={ItemData.fats}
+            value={itemData.fats}
             onChange={handleChange}
             className="no-arrows border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
@@ -128,7 +125,7 @@ export default function AddItemForm() {
             name="proteins"
             type="number"
             placeholder="18.1"
-            value={ItemData.proteins}
+            value={itemData.proteins}
             onChange={handleChange}
             className="no-arrows border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
           />

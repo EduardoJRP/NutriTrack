@@ -1,5 +1,5 @@
 export interface ItemData {
-    id?: number;
+    id: number;
     name: string;
     quantity: number;
     calories: number;
@@ -7,3 +7,12 @@ export interface ItemData {
     proteins: number;
     fats: number;
   }
+
+export interface NewItemData {
+    name: string;
+    quantity: number;
+    calories: number;
+    carbohydrates: number;
+    proteins: number;
+    fats: number;
+}

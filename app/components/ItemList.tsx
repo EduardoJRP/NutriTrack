@@ -11,7 +11,7 @@ export default function ItemList() {
   useEffect(() => {
     async function fetchItems() {
       try {
-        const response = await fetch('/api/submitForm');
+        const response = await fetch('/api/getList');
         const data = await response.json();
         if (data.success) {
           setItems(data.data);

@@ -1,44 +1,87 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
+// Define the expected shape of the request body
+interface UpdateItemPayload {
+  name: string;
+  quantity: number;
+  calories: number;
+  carbohydrates: number;
+  fats: number;
+  proteins: number;
+}
+
+// Helper function to validate the request body
+function validateUpdateItemPayload(payload: Partial<UpdateItemPayload>): payload is UpdateItemPayload {
+  const requiredFields: (keyof UpdateItemPayload)[] = [
+    'name',
+    'quantity',
+    'calories',
+    'carbohydrates',
+    'fats',
+    'proteins',
+  ];
+
+  for (const field of requiredFields) {
+    if (!payload[field]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 // PUT Handler: Updates an item
 export async function PUT(
   req: Request,
   { params }: { params: { id: string } }
 ) {
   const { id } = params;
-  const { name, quantity, calories, carbohydrates, fats, proteins } = await req.json(); // Get updated data from request body
 
-  // Optional: Validate the request body to ensure all fields are provided
-  if (!name || !quantity || !calories || !carbohydrates || !fats || !proteins) {
+  // Parse and validate the request body
+  let payload: Partial<UpdateItemPayload>;
+  try {
+    payload = await req.json();
+  } catch {
     return NextResponse.json(
-      { success: false, error: 'Missing required fields' },
+      { success: false, error: 'Invalid JSON payload' },
       { status: 400 }
     );
   }
 
+  if (!validateUpdateItemPayload(payload)) {
+    return NextResponse.json(
+      { success: false, error: 'Missing or invalid required fields' },
+      { status: 400 }
+    );
+  }
+
+  // Update the item in the database
   try {
-    // Update the item in the database with the new data
     const updatedItem = await prisma.item_Macro.update({
       where: {
-        id: parseInt(id, 10), // Find the item by its ID
+        id: parseInt(id, 10),
       },
-      data: {
-        name, // Update with the new data
-        quantity,
-        calories,
-        carbohydrates,
-        fats,
-        proteins,
-      },
+      data: payload,
     });
 
-    // Return updated item with success status
+    // Return the updated item
     return NextResponse.json({ success: true, data: updatedItem });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error during PUT operation:', error);
 
-    // If the item isn't found, you can return 404, but for general errors, 500 is better
+    // Handle Prisma-specific errors
+    const isPrismaError = (e: unknown): e is { code: string } =>
+      typeof e === 'object' && e !== null && 'code' in e;
+
+    if (isPrismaError(error) && error.code === 'P2025') {
+      return NextResponse.json(
+        { success: false, error: 'Item not found' },
+        { status: 404 }
+      );
+    }
+
+    // Handle unexpected errors
     return NextResponse.json(
       { success: false, error: 'Internal server error during update' },
       { status: 500 }
