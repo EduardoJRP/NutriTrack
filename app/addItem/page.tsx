@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import NavBar from "../components/NavBar";
-import AddItemForm from "../components/AddItemForm";
+import NavBar from '../components/NavBar';
+import AddItemForm from '../components/AddItemForm';
 
 export default function AddItem() {
   return (
@@ -11,5 +11,5 @@ export default function AddItem() {
         <AddItemForm></AddItemForm>
       </div>
     </div>
-  )
+  );
 }
