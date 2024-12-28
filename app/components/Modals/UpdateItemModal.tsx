@@ -42,9 +42,9 @@ export default function UpdateModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 w-full">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl">
-        <h1 className="text-2xl font-bold mb-4 p-4">Update Item</h1>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xls sm:max-w-sm h-auto">
+        <h1 className="text-2xl sm:text-lg font-bold mb-4 p-2 sm:p-0">Update Item</h1>
         <form
           className="space-y-4 flex flex-col"
           onSubmit={(e) => {
@@ -52,8 +52,8 @@ export default function UpdateModal({
             handleSubmit();
           }}
         >
-          <label className="flex flex-row w-full p-3">
-            <span className="self-center font-semibold text-lg w-48">
+          <label className="flex flex-col p-3 sm:p-0">
+            <span className="font-semibold text-lg sm:text-sm">
               Name of the food
             </span>
             <input
@@ -61,13 +61,13 @@ export default function UpdateModal({
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="border flex-grow border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="border flex-grow border-gray-300 rounded-lg p-3 sm:p-2 sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
               placeholder="Name"
               required
             />
           </label>
-          <label className="flex flex-row w-full p-3">
-            <span className="self-center font-semibold text-lg pr-4 w-48">
+          <label className="flex flex-col p-3 sm:p-0">
+            <span className="font-semibold text-lg sm:text-sm">
               Grams
             </span>
             <input
@@ -75,13 +75,13 @@ export default function UpdateModal({
               name="quantity"
               value={formData.quantity}
               onChange={handleChange}
-              className="no-arrows border flex-grow border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="no-arrows border flex-grow border-gray-300 rounded-lg p-3 sm:p-2 sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
               placeholder="Quantity (g)"
               required
             />
           </label>
-          <label className="flex flex-row w-full p-3">
-            <span className="self-center font-semibold text-lg pr-4 w-48">
+          <label className="flex flex-col p-3 sm:p-0">
+            <span className="font-semibold text-lg sm:text-sm">
               Calories
             </span>
             <input
@@ -89,27 +89,13 @@ export default function UpdateModal({
               name="calories"
               value={formData.calories}
               onChange={handleChange}
-              className="no-arrows border flex-grow border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="no-arrows border flex-grow border-gray-300 rounded-lg p-3 sm:p-2 sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
               placeholder="Calories"
               required
             />
           </label>
-          <label className="flex flex-row w-full p-3">
-            <span className="self-center font-semibold text-lg pr-4 w-48">
-              Calories
-            </span>
-            <input
-              type="number"
-              name="calories"
-              value={formData.calories}
-              onChange={handleChange}
-              className="no-arrows border flex-grow border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
-              placeholder="Calories"
-              required
-            />
-          </label>
-          <label className="flex flex-row w-full p-3">
-            <span className="self-center font-semibold text-lg pr-4 w-48">
+          <label className="flex flex-col p-3 sm:p-0">
+            <span className="font-semibold text-lg sm:text-sm">
               Carbohydrates
             </span>
             <input
@@ -117,13 +103,13 @@ export default function UpdateModal({
               name="carbohydrates"
               value={formData.carbohydrates}
               onChange={handleChange}
-              className="no-arrows border flex-grow border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="no-arrows border flex-grow border-gray-300 rounded-lg p-3 sm:p-2 sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
               placeholder="Carbohydrates"
               required
             />
           </label>
-          <label className="flex flex-row w-full p-3">
-            <span className="self-center font-semibold text-lg pr-4 w-48">
+          <label className="flex flex-col p-3 sm:p-0">
+            <span className="font-semibold text-lg sm:text-sm">
               Fats
             </span>
             <input
@@ -131,13 +117,13 @@ export default function UpdateModal({
               name="fats"
               value={formData.fats}
               onChange={handleChange}
-              className="no-arrows border flex-grow border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="no-arrows border flex-grow border-gray-300 rounded-lg p-3 sm:p-2 sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
               placeholder="Fats"
               required
             />
           </label>
-          <label className="flex flex-row w-full p-3">
-            <span className="self-center font-semibold text-lg pr-4 w-48">
+          <label className="flex flex-col p-3 sm:p-0">
+            <span className="font-semibold text-lg sm:text-sm">
               Proteins
             </span>
             <input
@@ -145,18 +131,18 @@ export default function UpdateModal({
               name="proteins"
               value={formData.proteins}
               onChange={handleChange}
-              className="no-arrows border flex-grow border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="no-arrows border flex-grow border-gray-300 rounded-lg p-3 sm:p-2 sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
               placeholder="Proteins"
               required
             />
           </label>
         </form>
         <div className="flex justify-end space-x-4 mt-4">
-          <button className="px-4 py-2 bg-gray-300 rounded" onClick={onClose}>
+          <button className="px-4 sm:px-2 py-2 sm:py-1 sm:text-sm bg-gray-300 rounded" onClick={onClose}>
             Cancel
           </button>
           <button
-            className="px-4 py-2 bg-blue-500 text-white rounded"
+            className="px-4 sm:px-2 py-2 sm:py-1 sm:text-sm bg-blue-500 text-white rounded"
             onClick={handleSubmit}
           >
             Update
