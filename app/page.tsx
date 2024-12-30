@@ -2,13 +2,14 @@
 
 import React from 'react';
 import NavBar from './components/NavBar';
+import TotalInfoCard from './components/TotalInfoCard';
 
 export default function Home() {
   return (
     <div>
       <NavBar />
       <div>
-        <h1>I am the main page</h1>
+        <TotalInfoCard></TotalInfoCard>
       </div>
     </div>
   );
