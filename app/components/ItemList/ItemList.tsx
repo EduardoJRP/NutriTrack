@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import ItemCard from './ItemCard';
-import UpdateModal from './Modals/UpdateItemModal';
-import { ItemData } from '../types/item';
+import ItemCard from '../ItemList/ItemCard';
+import UpdateModal from '../Modals/UpdateItemModal';
+import { ItemData } from '../../types/item';
 
 export default function ItemList() {
   const [items, setItems] = useState<ItemData[]>([]);

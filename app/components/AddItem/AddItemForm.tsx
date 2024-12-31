@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NewItemData } from '../types/item';
+import { NewItemData } from '../../types/item';
 
 export default function AddItemForm() {
   const [itemData, setItemData] = useState<NewItemData>({
