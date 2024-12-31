@@ -1,14 +1,15 @@
 'use client';
 
 import React from 'react';
-import NavBar from './components/NavBar';
+import NavBar from './components/Common/NavBar';
+import TotalInfoCard from './components/Main/TotalInfoCard';
 
 export default function Home() {
   return (
     <div>
       <NavBar />
       <div>
-        <h1>I am the main page</h1>
+        <TotalInfoCard></TotalInfoCard>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 'use client';
 
-import NavBar from '../components/NavBar';
-import ItemList from '../components/ItemList';
+import NavBar from '../components/Common/NavBar';
+import ItemList from '../components/ItemList/ItemList';
 
 export default function AddItem() {
   return (
