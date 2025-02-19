@@ -22,4 +22,24 @@ model Item_Macro {
   carbohydrates Float // Precision for carbs (e.g., grams)
   fats         Float // Precision for fats (e.g., grams)
   proteins      Float // Precision for protein (e.g., grams)
+  users UserItemMacro[] // Relation to UserItemMacro
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  name String
+  weight Float // Use kilograms
+  height Float // Use meters
+  bodyFatPercentage Float
+  age Int
+  itemMacros UserItemMacro[] // Relation to UserItemMacro
+}
+
+// Table for Item_macro and User relationship
+model UserItemMacro {
+  userId Int
+  itemMacroId Int
+  user User @relation(fields: [userId], references: [id])
+  itemMacro Item_Macro @relation(fields: [itemMacroId], references: [id])
+  @@id([userId, itemMacroId]) // Composite primary key
 }
