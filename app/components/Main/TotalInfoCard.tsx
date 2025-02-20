@@ -2,14 +2,18 @@ import React from 'react';
 import { useState } from 'react';
 import DonutChart from './DonutChart';
 
-const TotalInfoCard: React.FC = () => {
+interface TotalInfoCardProps {
+  className?: string;
+}
+
+const TotalInfoCard: React.FC<TotalInfoCardProps> = ({ className }) => {
   const [totalCalories, setTotalCalories] = useState<number>(0);
   const [proteinsIntake, setProteinsIntake] = useState<number>(0);
   const [carbohydratesIntake, setCarbohydratesIntake] = useState<number>(0);
   const [fatsIntake, setFatsIntake] = useState<number>(0);
 
   return (
-    <div className="m-6 p-6 rounded-xl shadow-lg inline-block">
+    <div className={`m-6 p-6 rounded-xl shadow-lg inline-block ${className}`}>
       <div className="flex flex-row">
         <div className="flex flex-col">
           <DonutChart
