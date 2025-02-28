@@ -11,14 +11,16 @@ export default function Home() {
   return (
     <div>
       <NavBar />
-      <div className="flex flex-col">
-        <div className="flex flex-row">
-          <UserWelcomeCard className="w-2/3" />
-          <TotalInfoCard className="w-1/3" />
-        </div>
-        <div className='flex flex-row'>
-          <UserInfo className="w-1/2" />
-          <FavoriteFoodList className="w-1/2" />
+      <div className='m-6'>
+        <div className="flex flex-col">
+          <div className="flex flex-row">
+            <UserWelcomeCard className="w-2/3" />
+            <TotalInfoCard className="w-1/3" />
+          </div>
+          <div className="flex flex-row">
+            <UserInfo className="w-1/2" />
+            <FavoriteFoodList className="w-1/2" />
+          </div>
         </div>
       </div>
     </div>
