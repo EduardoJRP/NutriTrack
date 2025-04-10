@@ -1,93 +1,101 @@
-# Calories App
+# 🥗 Calories App
 
-An app for the track of calories in your diet.
+A full-stack application to track calories from daily meals and help manage diet goals. Built with **Next.js**, **TypeScript**, **Prisma**, and **MySQL**.
 
 ---
 
-## Table of Contents
+## 📋 Table of Contents
 
 - [Features](#features)
+- [Tech Stack](#tech-stack)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Screenshots](#screenshots)
 - [Contributing](#contributing)
-- [Licenses](#licenses)
+- [License](#license)
 
 ---
 
-## Features
+## ✨ Features
 
-- **Add and manage multiple foods**: Add, edit, delete and update foods in the app.
-- **See overall calories**: See the overall of your foods stored.
-- **Responsive design for computers**: Design only for computers.
+- 📝 Add, edit, and delete food entries
+- 📊 Automatically calculates and displays total calories
+- 💻 Designed for desktop screens (responsive layout coming soon)
+- ⚙️ Stores data persistently using Prisma + MySQL
 
 ---
 
-## Installation
+## 🧰 Tech Stack
 
-1. Clone the repository:
+- **Frontend:** Next.js, React, TypeScript, Tailwind CSS  
+- **Backend:** Prisma, MySQL  
+- **Tools:** ESLint, Prettier, Git, GitHub
+
+---
+
+## 🚀 Installation
+
+1. **Clone the repository**
 
 ```bash
 git clone https://github.com/EduardoJRP/CaloriesTrack.git
+cd CaloriesTrack
 ```
 
-2. Install dependencies:
+2. **Install dependencies**
 
 ```bash
 npm install
 ```
 
-3. Start the development server
+3. **Set up your environment variables**
+Create a .env file and add your database URL
 
+```bash
+DATABASE_URL="mysql://USER:PASSWORD@localhost:3306/calories_app"
+```
+
+4. **Run the development server**
 ```bash
 npm run dev
 ```
 
-4. Open the app in your browser at https://localhost:3000
+5.  Open http://localhost:3000 in your browser
 
 ---
 
-## Usage
+## 📖 Usage
 
-**NEED TO WORK ON THIS**
-
----
-
-## Screenshots
-
-**NEED TO WORK ON THIS**
+- Start the dev server
+- Add your daily meals along with calories
+- View the list and total calorie count
+- (More features like daily tracking and mobile support coming soon!)
 
 ---
 
-## Contributing
+## 🖼️ Screenshots
+*Coming soon! UI previews will be added here*
 
-You are welcome to contribute to make the Calories App even better! To contribute:
+---
 
-1. Fork the repository
-
-2. Create a new branch for your feature:
+## 🤝 Contributing
+Pull request are welcome! Here's how to get started:
 
 ```bash
+# Fork the repository
+# Create a new branch
 git checkout -b feature-name
-```
 
-3. Commit your changes:
+# Commit your changes
+git commit -m "Add a feature"
 
-```bash
-git add .
-git commit -m "Add the feature"
-```
-
-4.  Push to your branch
-
-```bash
+# Push your branch
 git push origin feature-name
-```
 
-5. Open a pull request
+# Open a pull request 🚀
+```
 
 ---
 
-## Licenses
-
-No licenses added yet.
+## 📄 License
+This project currently does not have a license.
