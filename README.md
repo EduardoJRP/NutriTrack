@@ -16,7 +16,7 @@ A full-stack application to track calories from daily meals and help manage diet
 
 ---
 
-## ✨ Features
+## Features
 
 - 📝 Add, edit, and delete food entries
 - 📊 Automatically calculates and displays total calories
@@ -25,7 +25,7 @@ A full-stack application to track calories from daily meals and help manage diet
 
 ---
 
-## 🧰 Tech Stack
+## Tech Stack
 
 - **Frontend:** Next.js, React, TypeScript, Tailwind CSS  
 - **Backend:** Prisma, MySQL  
@@ -33,7 +33,7 @@ A full-stack application to track calories from daily meals and help manage diet
 
 ---
 
-## 🚀 Installation
+## Installation
 
 1. **Clone the repository**
 
@@ -64,7 +64,7 @@ npm run dev
 
 ---
 
-## 📖 Usage
+## Usage
 
 - Start the dev server
 - Add your daily meals along with calories
@@ -73,12 +73,12 @@ npm run dev
 
 ---
 
-## 🖼️ Screenshots
+##  Screenshots
 *Coming soon! UI previews will be added here*
 
 ---
 
-## 🤝 Contributing
+## Contributing
 Pull request are welcome! Here's how to get started:
 
 ```bash
@@ -97,5 +97,5 @@ git push origin feature-name
 
 ---
 
-## 📄 License
+## License
 This project currently does not have a license.
