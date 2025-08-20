@@ -1,4 +1,4 @@
-# 🥗 Calories App
+# 🥗 NutriTrack
 
 A full-stack application to track calories from daily meals and help manage diet goals. Built with **Next.js**, **TypeScript**, **Prisma**, and **MySQL**.
 
