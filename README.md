@@ -74,7 +74,10 @@ npm run dev
 ---
 
 ##  Screenshots
-*Coming soon! UI previews will be added here*
+
+Here I will add a link for the design of the web page and mobile
+
+[My Figma Design](https://www.figma.com/design/GMklKFxs5qWxGmFcSl5km2/Calories-App?node-id=0-1&p=f&t=E34avnclw0sK2gxr-0)
 
 ---
 
