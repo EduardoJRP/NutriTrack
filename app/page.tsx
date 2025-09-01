@@ -16,10 +16,10 @@ export default function DashboardPage() {
       </nav>
 
       {/* Main content */}
-      <main className="p-8 grid gap-8 md:grid-cols-2">
+      <main className="p-8 grid gap-8 md:grid-cols-1">
         {/* Progress Section */}
         <div className="bg-white rounded-2xl shadow-lg p-6">
-          <h2 className="text-lg font-semibold mb-4">Today's Progress</h2>
+          <h2 className="text-lg font-semibold mb-4">Today&apos;s Progress</h2>
           <p className="text-gray-500 mb-6">
             Track your daily calorie intake and stay on top of your health goals.
           </p>
