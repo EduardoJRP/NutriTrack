@@ -1,7 +1,3 @@
-// app/settings/page.tsx  (Next.js App Router)
-// or src/pages/settings.tsx for CRA/Vite (adjust routing)
-// Uses only React + Tailwind (no UI libraries).
-
 "use client";
 
 import { useState } from "react";
