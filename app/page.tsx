@@ -1,27 +1,20 @@
 'use client';
 
+// Update the import path to match the actual location and casing of Navbar
+import Navbar from '@/app/components/Common/Navbar';
+
 export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800">
-      {/* Navbar */}
-      <nav className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold text-green-600">NutriTrack</h1>
-        <ul className="flex gap-6 text-gray-600">
-          <li className="hover:text-green-600 cursor-pointer">Dashboard</li>
-          <li className="hover:text-green-600 cursor-pointer">Food</li>
-          <li className="hover:text-green-600 cursor-pointer">Exercises</li>
-          <li className="hover:text-green-600 cursor-pointer">Recipes</li>
-          <li className="hover:text-green-600 cursor-pointer">Community</li>
-        </ul>
-      </nav>
-
+      <Navbar />
       {/* Main content */}
       <main className="p-8 grid gap-8 md:grid-cols-1">
         {/* Progress Section */}
         <div className="bg-white rounded-2xl shadow-lg p-6">
           <h2 className="text-lg font-semibold mb-4">Today&apos;s Progress</h2>
           <p className="text-gray-500 mb-6">
-            Track your daily calorie intake and stay on top of your health goals.
+            Track your daily calorie intake and stay on top of your health
+            goals.
           </p>
 
           {/* Stats */}
@@ -45,9 +38,14 @@ export default function DashboardPage() {
 
           {/* Progress Bar */}
           <div className="mt-6">
-            <p className="text-sm text-gray-600 mb-1">Daily Calorie Intake 84%</p>
+            <p className="text-sm text-gray-600 mb-1">
+              Daily Calorie Intake 84%
+            </p>
             <div className="w-full bg-gray-200 rounded-full h-3">
-              <div className="bg-green-500 h-3 rounded-full" style={{ width: "84%" }}></div>
+              <div
+                className="bg-green-500 h-3 rounded-full"
+                style={{ width: '84%' }}
+              ></div>
             </div>
             <p className="text-xs text-gray-500 mt-1">1850 / 2200 kcal</p>
           </div>
@@ -101,4 +99,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
