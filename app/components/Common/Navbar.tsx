@@ -11,9 +11,9 @@ export default function Navbar() {
         <li className="hover:text-green-600 cursor-pointer">
           <Link href="/recipes">Recipes</Link>
         </li>
-        <li className="hover:text-green-600 cursor-pointer">Exercises</li>
-        <li className="hover:text-green-600 cursor-pointer">Recipes</li>
-        <li className="hover:text-green-600 cursor-pointer">Community</li>
+        <li className="hover:text-green-600 cursor-pointer"><Link href="/intakeLog">Intake Log</Link></li>
+        <li className="hover:text-green-600 cursor-pointer"><Link href="/profile">Profile</Link></li>
+        <li className="hover:text-green-600 cursor-pointer"><Link href="/help">Help</Link></li>
       </ul>
     </nav>
   );
