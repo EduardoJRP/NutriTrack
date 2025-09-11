@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Navbar from "../components/Common/Navbar";
 
 export default function SettingsPage() {
   const [name, setName] = useState("Sophia Carter");
@@ -18,21 +19,7 @@ export default function SettingsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800">
-      {/* Navbar (same style as other pages) */}
-      <nav className="bg-white shadow-md">
-        <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
-          <span className="text-xl font-extrabold tracking-tight text-green-600">
-            NutriTrack
-          </span>
-          <ul className="hidden sm:flex items-center gap-6 text-gray-600">
-            <li className="hover:text-green-600 cursor-pointer">Dashboard</li>
-            <li className="hover:text-green-600 cursor-pointer">Food</li>
-            <li className="hover:text-green-600 cursor-pointer">Exercises</li>
-            <li className="hover:text-green-600 cursor-pointer">Recipes</li>
-            <li className="hover:text-green-600 cursor-pointer">Community</li>
-          </ul>
-        </div>
-      </nav>
+      <Navbar />
 
       <main className="mx-auto max-w-6xl px-6 py-10">
         {/* Page title */}

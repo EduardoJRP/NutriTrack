@@ -1,9 +1,7 @@
-// app/help/page.tsx (Next.js App Router)
-// or src/pages/help.tsx for CRA/Vite projects
-
 "use client";
 
 import { useState } from "react";
+import Navbar from "../components/Common/Navbar";
 
 export default function HelpPage() {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
@@ -35,17 +33,7 @@ export default function HelpPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800">
-      {/* Navbar */}
-      <nav className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold text-green-600">NutriTrack</h1>
-        <ul className="flex gap-6 text-gray-600">
-          <li className="hover:text-green-600 cursor-pointer">Dashboard</li>
-          <li className="hover:text-green-600 cursor-pointer">Food</li>
-          <li className="hover:text-green-600 cursor-pointer">Exercises</li>
-          <li className="hover:text-green-600 cursor-pointer">Recipes</li>
-          <li className="hover:text-green-600 cursor-pointer">Community</li>
-        </ul>
-      </nav>
+      <Navbar />
 
       {/* Main */}
       <main className="mx-auto max-w-5xl px-6 py-10">

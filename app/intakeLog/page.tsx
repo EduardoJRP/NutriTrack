@@ -1,18 +1,11 @@
 "use client";
 
+import Navbar from "../components/Common/Navbar";
+
 export default function TodaysLogPage() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800">
-      {/* Navbar */}
-      <nav className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold text-green-600">FitTrack</h1>
-        <ul className="flex gap-6 text-gray-600">
-          <li className="hover:text-green-600 cursor-pointer">Home</li>
-          <li className="text-green-600 font-semibold cursor-default">Dashboard</li>
-          <li className="hover:text-green-600 cursor-pointer">Recipes</li>
-          <li className="hover:text-green-600 cursor-pointer">Community</li>
-        </ul>
-      </nav>
+      <Navbar />
 
       {/* Main */}
       <main className="mx-auto max-w-4xl px-6 py-10">

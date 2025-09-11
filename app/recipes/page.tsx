@@ -1,5 +1,6 @@
-// app/recipes/page.tsx  (Next.js App Router)
-// or src/pages/recipes.tsx for CRA/Vite (adjust imports accordingly)
+"use client";
+
+import Navbar from "../components/Common/Navbar";
 
 export default function RecipesPage() {
   const categories = ["All", "Breakfast", "Lunch", "Dinner", "Snacks"];
@@ -14,18 +15,7 @@ export default function RecipesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800">
-      {/* Navbar */}
-      <nav className="bg-white shadow-sm">
-        <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
-          <span className="text-xl font-extrabold tracking-tight text-green-600">NutriTrack</span>
-          <ul className="flex items-center gap-6 text-gray-600">
-            <li className="hover:text-green-600 cursor-pointer">Home</li>
-            <li className="text-green-600 font-semibold cursor-default">Recipes</li>
-            <li className="hover:text-green-600 cursor-pointer">Community</li>
-            <li className="hover:text-green-600 cursor-pointer">About</li>
-          </ul>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* Header / Hero */}
       <header className="mx-auto max-w-6xl px-6 pt-10 pb-6">
