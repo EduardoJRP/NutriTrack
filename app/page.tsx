@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Navbar from '@/app/components/Common/Navbar';
-import AddFoodModal from '@/app/components/Modals/AddFoodModal';
+import AddFoodModal from '@/app/components/Modals/Modal';
 
 const FOOD_LOG = [
   {
@@ -63,7 +63,7 @@ export default function DashboardPage() {
 
       {/* Main content (unchanged) */}
       <main className="p-8 grid gap-8 md:grid-cols-1">
-        {/* Progress Section ... */}
+        {/* TODO: Daily Caloric Intake, Goal*/}
 
         {/* Food Log */}
         <div className="bg-white rounded-2xl shadow-lg p-6">
