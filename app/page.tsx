@@ -51,7 +51,6 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-gray-50 text-gray-800">
       <Navbar />
 
-      {/* Modal */}
       {showModal && (
         <AddFoodModal
           form={form}
@@ -61,7 +60,7 @@ export default function DashboardPage() {
         />
       )}
 
-      {/* Main content (unchanged) */}
+      {/* Main content */}
       <main className="p-8 grid gap-8 md:grid-cols-1">
         {/* TODO: Daily Caloric Intake, Goal*/}
 
