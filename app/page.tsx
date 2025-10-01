@@ -9,19 +9,16 @@ const FOOD_LOG = [
     food: 'Avocado Toast',
     serving: '2 slices',
     calories: '350 kcal',
-    time: '8:00 AM',
   },
   {
     food: 'Chicken Salad',
     serving: '1 cup',
     calories: '450 kcal',
-    time: '12:30 PM',
   },
   {
     food: 'Salmon with Vegetables',
     serving: '1 fillet',
     calories: '600 kcal',
-    time: '7:00 PM',
   },
 ];
 
@@ -71,9 +68,8 @@ export default function DashboardPage() {
             <thead>
               <tr className="text-left border-b">
                 <th className="pb-2">Food</th>
-                <th className="pb-2">Serving Size</th>
+                <th className="pb-2">Grams</th>
                 <th className="pb-2">Calories</th>
-                <th className="pb-2">Time</th>
               </tr>
             </thead>
             <tbody>
@@ -85,7 +81,6 @@ export default function DashboardPage() {
                   <td className="py-2">{item.food}</td>
                   <td>{item.serving}</td>
                   <td>{item.calories}</td>
-                  <td>{item.time}</td>
                 </tr>
               ))}
             </tbody>
