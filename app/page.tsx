@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Navbar from '@/app/components/Common/Navbar';
 import AddFoodModal from '@/app/components/Modals/Modal';
+import FoodsTableList from './api/foods/route';
 
 const FOOD_LOG = [
   {
@@ -64,27 +65,7 @@ export default function DashboardPage() {
         {/* Food Log */}
         <div className="bg-white rounded-2xl shadow-lg p-6">
           <h2 className="text-lg font-semibold mb-4">Food Log</h2>
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-left border-b">
-                <th className="pb-2">Food</th>
-                <th className="pb-2">Grams</th>
-                <th className="pb-2">Calories</th>
-              </tr>
-            </thead>
-            <tbody>
-              {foodLog.map((item, idx) => (
-                <tr
-                  key={idx}
-                  className={idx !== foodLog.length - 1 ? 'border-b' : ''}
-                >
-                  <td className="py-2">{item.food}</td>
-                  <td>{item.serving}</td>
-                  <td>{item.calories}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <FoodsTableList />
 
           <div className="mt-6 flex gap-4">
             <button
