@@ -1,14 +1,8 @@
-import { supabaseServer } from '@/app/lib/supabaseServer';
-import { FoodTable } from '@/app/types/foodTable';
+import getFoods from '../db/foods';
 
 // Fetch list of foods
 export default async function FoodsTableList() {
-  const { data, error } = await supabaseServer
-    .from('foods')
-    .select('*')
-    .returns<FoodTable[]>();
-  if (error) throw new Error(error.message);
-
+  const data = await getFoods();
   return (
     <table className="w-full text-sm">
       <thead>

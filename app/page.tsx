@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Navbar from '@/app/components/Common/Navbar';
 import AddFoodModal from '@/app/components/Modals/Modal';
-import FoodsTableList from './api/foods/route';
+import FoodsTableList from '@/app/server/FoodsTableList';
 
 const FOOD_LOG = [
   {
@@ -24,7 +24,7 @@ const FOOD_LOG = [
 ];
 
 export default function DashboardPage() {
-  const [foodLog, setFoodLog] = useState(FOOD_LOG);
+  const [foodLog, setFoodLog] = useState(FoodsTableList);
   const [showModal, setShowModal] = useState(false);
 
   const [form, setForm] = useState({
