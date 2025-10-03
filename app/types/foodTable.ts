@@ -1,4 +1,4 @@
-export type FoodTable = {
+export type Food = {
     id: number;
     created_at: string;
     name: string;
