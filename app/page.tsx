@@ -3,28 +3,9 @@
 import { useState } from 'react';
 import Navbar from '@/app/components/Common/Navbar';
 import AddFoodModal from '@/app/components/Modals/Modal';
-import FoodsTableList from '@/app/server/FoodsTableList';
-
-const FOOD_LOG = [
-  {
-    food: 'Avocado Toast',
-    serving: '2 slices',
-    calories: '350 kcal',
-  },
-  {
-    food: 'Chicken Salad',
-    serving: '1 cup',
-    calories: '450 kcal',
-  },
-  {
-    food: 'Salmon with Vegetables',
-    serving: '1 fillet',
-    calories: '600 kcal',
-  },
-];
 
 export default function DashboardPage() {
-  const [foodLog, setFoodLog] = useState(FoodsTableList);
+  const [foodLog, setFoodLog] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
   const [form, setForm] = useState({
@@ -33,6 +14,8 @@ export default function DashboardPage() {
     calories: '',
     time: '',
   });
+
+  const data = []
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -65,8 +48,27 @@ export default function DashboardPage() {
         {/* Food Log */}
         <div className="bg-white rounded-2xl shadow-lg p-6">
           <h2 className="text-lg font-semibold mb-4">Food Log</h2>
-          <FoodsTableList />
-
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-left border-b">
+                <th className="pb-2">Food</th>
+                <th className="pb-2">Grams</th>
+                <th className="pb-2">Calories</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((item, idx) => (
+                <tr
+                  key={idx}
+                  className={idx !== data.length - 1 ? 'border-b' : ''}
+                >
+                  <td className="py-2">{item.name}</td>
+                  <td>{item.id}</td>
+                  <td>{item.is_public}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
           <div className="mt-6 flex gap-4">
             <button
               className="bg-green-600 hover:bg-green-700 text-white rounded-lg px-4 py-2"
