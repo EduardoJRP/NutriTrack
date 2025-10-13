@@ -4,7 +4,8 @@ type Entry = {
   food: string;
   serving: string;
   calories: string;
-  time: string;
+  mealType: string;
+  isPublic: '' | 'yes' | 'no';
 };
 
 export default function AddFoodForm({
@@ -14,7 +15,7 @@ export default function AddFoodForm({
   onCancel,
 }: {
   form: Entry;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   onSubmit: (e: React.FormEvent) => void;
   onCancel: () => void;
 }) {
@@ -44,14 +45,34 @@ export default function AddFoodForm({
         onChange={onChange}
         required
       />
-      <input
+      <select
         className="border rounded px-3 py-2"
-        name="time"
-        placeholder="Time"
-        value={form.time}
+        name="mealType"
+        value={form.mealType}
         onChange={onChange}
         required
-      />
+      >
+        <option value="" disabled>
+          Select Meal Type
+        </option>
+        <option value="breakfast">Breakfast</option>
+        <option value="lunch">Lunch</option>
+        <option value="dinner">Dinner</option>
+        <option value="snacks">Snack</option>
+      </select>
+      <select
+        className="border rounded px-3 py-2"
+        name="isPublic"
+        value={form.isPublic}
+        onChange={onChange}
+        required
+      >
+        <option value="" disabled>
+          Is it public?
+        </option>
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
 
       <div className="flex gap-2 justify-end mt-2">
         <button

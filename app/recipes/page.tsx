@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import Navbar from '../components/Common/Navbar';
 
 export default function RecipesPage() {
@@ -105,8 +106,8 @@ export default function RecipesPage() {
           ))}
 
           {/* Add Recipe Card */}
-          <button
-            onClick={() => alert('Add Recipe Clicked!')}
+          <Link
+            href="/recipes/new"
             className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-green-400 bg-green-50 hover:bg-green-100 transition h-full text-green-600 font-medium"
           >
             <svg
@@ -123,8 +124,8 @@ export default function RecipesPage() {
                 d="M12 4v16m8-8H4"
               />
             </svg>
-            Add Recipe
-          </button>
+            <span>Add Recipe</span>
+          </Link>
         </section>
 
         {/* Pagination */}
