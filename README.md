@@ -28,7 +28,7 @@ A full-stack application to track calories from daily meals and help manage diet
 ## Tech Stack
 
 - **Frontend:** Next.js, React, TypeScript, Tailwind CSS  
-- **Backend:** Prisma, MySQL  
+- **Backend:** Supabase (postgress)  
 - **Tools:** ESLint, Prettier, Git, GitHub
 
 ---
@@ -38,8 +38,8 @@ A full-stack application to track calories from daily meals and help manage diet
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/EduardoJRP/CaloriesTrack.git
-cd CaloriesTrack
+git clone https://github.com/EduardoJRP/NutriTrack.git
+cd nutritrack
 ```
 
 2. **Install dependencies**
@@ -52,7 +52,7 @@ npm install
 Create a .env file and add your database URL
 
 ```bash
-DATABASE_URL="mysql://USER:PASSWORD@localhost:3306/calories_app"
+TO DO!!!
 ```
 
 4. **Run the development server**
