@@ -126,7 +126,9 @@ export default function NewRecipePage() {
 
           {/* 🧂 Ingredient Search + Selection */}
           <div className="mt-10">
-            <label className="text-lg font-semibold mb-3">Select Ingredients</label>
+            <label className="text-lg font-semibold mb-3">
+              Select Ingredients
+            </label>
 
             {/* Search Bar */}
             <input
@@ -164,6 +166,19 @@ export default function NewRecipePage() {
                   <span className="text-sm text-gray-700">{ingredient}</span>
                 </label>
               ))}
+            </div>
+            <div>
+              Not seeing the ingredient you're looking for?{' '}
+              <span
+                role="button"
+                tabIndex={0}
+                onClick={() => setShowModal(true)}
+                onKeyDown={(e) => e.key === 'Enter' && setShowModal(true)}
+                className="text-blue-500 underline cursor-pointer hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded"
+              >
+                Add it here
+              </span>
+              .
             </div>
           </div>
         </form>
