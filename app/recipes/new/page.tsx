@@ -2,6 +2,10 @@
 
 import Navbar from '@/app/components/Common/Navbar';
 import { useState } from 'react';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ingredientSchema } from '@/app/lib/zodSchemas/newIngredient';
 
 export default function NewRecipePage() {
   const [form, setForm] = useState({
@@ -12,10 +16,9 @@ export default function NewRecipePage() {
   });
 
   const [search, setSearch] = useState('');
+  const [showModal, setShowModal] = useState(false);
   const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
-
-  // Example ingredient list — ideally you’ll fetch this from Supabase
-  const ingredients = [
+  const [ingredients, setIngredients] = useState<string[]>([
     'Chicken Breast',
     'Salmon',
     'Avocado',
@@ -26,8 +29,29 @@ export default function NewRecipePage() {
     'Greek Yogurt',
     'Almonds',
     'Banana',
-  ];
+  ]);
 
+  type IngredientForm = z.infer<typeof ingredientSchema>;
+
+  // 🧩 Hook form setup
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<IngredientForm>({
+    resolver: zodResolver(ingredientSchema),
+    defaultValues: {
+      name: '',
+      quantityGrams: 0,
+      calories: 0,
+      carbs: 0,
+      proteins: 0,
+      fats: 0,
+    },
+  });
+
+  // 🌿 Regular form functions
   const onChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -44,10 +68,21 @@ export default function NewRecipePage() {
     setSelectedIngredients([]);
   };
 
-  // Filter ingredients based on search
   const filteredIngredients = ingredients.filter((ingredient) =>
     ingredient.toLowerCase().includes(search.toLowerCase())
   );
+
+  // 💾 Handle ingredient save
+  const onSave = (data: IngredientForm) => {
+    if (!ingredients.includes(data.name)) {
+      setIngredients((prev) => [...prev, data.name]);
+    }
+    if (!selectedIngredients.includes(data.name)) {
+      setSelectedIngredients((prev) => [...prev, data.name]);
+    }
+    reset();
+    setShowModal(false);
+  };
 
   return (
     <>
@@ -130,7 +165,6 @@ export default function NewRecipePage() {
               Select Ingredients
             </label>
 
-            {/* Search Bar */}
             <input
               type="text"
               placeholder="Search ingredients..."
@@ -139,7 +173,6 @@ export default function NewRecipePage() {
               onChange={(e) => setSearch(e.target.value)}
             />
 
-            {/* Actions */}
             <div className="flex justify-end gap-3 mb-3">
               <button
                 type="button"
@@ -150,7 +183,6 @@ export default function NewRecipePage() {
               </button>
             </div>
 
-            {/* Ingredients List */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
               {filteredIngredients.map((ingredient) => (
                 <label
@@ -167,8 +199,9 @@ export default function NewRecipePage() {
                 </label>
               ))}
             </div>
-            <div>
-              Not seeing the ingredient you're looking for?{' '}
+
+            <div className="mt-6 text-sm text-gray-600">
+              Not seeing the ingredient you&apos;re looking for?{' '}
               <span
                 role="button"
                 tabIndex={0}
@@ -183,6 +216,84 @@ export default function NewRecipePage() {
           </div>
         </form>
       </main>
+
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-lg">
+            <h2 className="text-lg font-semibold mb-4">Add New Ingredient</h2>
+
+            <form onSubmit={handleSubmit(onSave)}>
+              <div className="space-y-3">
+                <input
+                  type="text"
+                  placeholder="Ingredient name"
+                  {...register('name')}
+                  className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none"
+                />
+                {errors.name && (
+                  <p className="text-sm text-red-600">{errors.name.message}</p>
+                )}
+
+                <input
+                  type="number"
+                  placeholder="Quantity (grams)"
+                  {...register('quantityGrams', { valueAsNumber: true })}
+                  className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none"
+                />
+                {errors.quantityGrams && (
+                  <p className="text-sm text-red-600">
+                    {errors.quantityGrams.message}
+                  </p>
+                )}
+
+                <input
+                  type="number"
+                  placeholder="Calories"
+                  {...register('calories', { valueAsNumber: true })}
+                  className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none"
+                />
+                <input
+                  type="number"
+                  placeholder="Carbohydrates"
+                  {...register('carbs', { valueAsNumber: true })}
+                  className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none"
+                />
+                <input
+                  type="number"
+                  placeholder="Proteins"
+                  {...register('proteins', { valueAsNumber: true })}
+                  className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none"
+                />
+                <input
+                  type="number"
+                  placeholder="Fats"
+                  {...register('fats', { valueAsNumber: true })}
+                  className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none"
+                />
+              </div>
+
+              <div className="flex justify-end gap-3 mt-5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowModal(false);
+                    reset();
+                  }}
+                  className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded bg-green-500 text-white hover:bg-green-600"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </>
   );
 }
