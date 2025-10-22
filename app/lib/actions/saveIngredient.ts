@@ -24,12 +24,13 @@ export async function saveIngredient(data: unknown) {
   const multiplier = 100 / quantityGrams;
 
   const normalized = {
-    name,
-    calories: Math.round(calories * multiplier),
-    carbohydrates: Math.round(carbohydrates * multiplier),
-    proteins: Math.round(proteins * multiplier),
-    fats: Math.round(fats * multiplier),
-  };
+  name,
+  calories: Number((calories * multiplier).toFixed(2)),
+  carbohydrates: Number((carbohydrates * multiplier).toFixed(2)),
+  proteins: Number((proteins * multiplier).toFixed(2)),
+  fats: Number((fats * multiplier).toFixed(2)),
+};
+
 
   const information = supabase;
 
