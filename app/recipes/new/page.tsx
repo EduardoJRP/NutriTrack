@@ -2,6 +2,7 @@
 
 import Navbar from '@/app/components/Common/Navbar';
 import IngredientModal from '@/app/components/Modals/ingredientModal';
+import { saveIngredient } from '@/app/lib/actions/saveIngredient';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -67,16 +68,28 @@ export default function NewRecipePage() {
     setSelectedIngredients([]);
   };
 
-  const handleSaveIngredient = (data: IngredientFormData) => {
-    if (!ingredients.includes(data.name)) {
-      setIngredients((prev) => [...prev, data.name]);
-    }
-    if (!selectedIngredients.includes(data.name)) {
-      setSelectedIngredients((prev) => [...prev, data.name]);
-    }
-    reset();
-    setShowModal(false);
-  };
+  const handleSaveIngredient = async (data: IngredientFormData) => {
+  // Call the server function
+  const result = await saveIngredient(data);
+
+  if (!result.success) {
+    console.error(result.error);
+    alert('Failed to save ingredient. Please check your input.');
+    return;
+  }
+
+  // ✅ If saved successfully in Supabase, also update local state
+  if (!ingredients.includes(data.name)) {
+    setIngredients((prev) => [...prev, data.name]);
+  }
+  if (!selectedIngredients.includes(data.name)) {
+    setSelectedIngredients((prev) => [...prev, data.name]);
+  }
+
+  reset();
+  setShowModal(false);
+};
+
 
   return (
     <>

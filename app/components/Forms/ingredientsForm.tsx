@@ -19,6 +19,7 @@ export default function IngredientForm({
 
       <input
         type="number"
+        step="0.01"
         {...register('quantityGrams', { valueAsNumber: true })}
         placeholder="Quantity (g)"
         className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none"
@@ -29,6 +30,7 @@ export default function IngredientForm({
 
       <input
         type="number"
+        step="0.01"
         {...register('calories', { valueAsNumber: true })}
         placeholder="Calories"
         className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none"
@@ -38,6 +40,7 @@ export default function IngredientForm({
       )}
       <input
         type="number"
+        step="0.01"
         {...register('carbohydrates', { valueAsNumber: true })}
         placeholder="Carbohydrates"
         className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none"
@@ -47,6 +50,7 @@ export default function IngredientForm({
       )}
       <input
         type="number"
+        step="0.01"
         {...register('proteins', { valueAsNumber: true })}
         placeholder="Proteins"
         className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none"
@@ -56,6 +60,7 @@ export default function IngredientForm({
       )}
       <input
         type="number"
+        step="0.01"
         {...register('fats', { valueAsNumber: true })}
         placeholder="Fats"
         className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none"
