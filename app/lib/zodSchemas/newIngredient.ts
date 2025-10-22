@@ -10,3 +10,5 @@ export const ingredientSchema = z.object({
   proteins: z.number({ message: 'Proteins must be a number' }).min(0),
   fats: z.number({ message: 'Fats must be a number' }).min(0),
 });
+
+export type IngredientFormData = z.infer<typeof ingredientSchema>;
