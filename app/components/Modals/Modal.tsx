@@ -7,7 +7,8 @@ type Entry = {
   food: string;
   serving: string;
   calories: string;
-  time: string;
+  mealType: string;
+  isPublic: '' | 'yes' | 'no';
 };
 
 export default function AddFoodModal({
@@ -17,7 +18,7 @@ export default function AddFoodModal({
   onCancel,
 }: {
   form: Entry;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   onSubmit: (e: React.FormEvent) => void;
   onCancel: () => void;
 }) {
