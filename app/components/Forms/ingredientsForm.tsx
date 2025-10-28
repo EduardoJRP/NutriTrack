@@ -17,16 +17,27 @@ export default function IngredientForm({
       />
       {errors.name && <p className="error">{errors.name.message}</p>}
 
-      <input
-        type="number"
-        step="0.01"
-        {...register('quantityGrams', { valueAsNumber: true })}
-        placeholder="Quantity (g)"
-        className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none"
-      />
-      {errors.quantityGrams && (
-        <p className="error">{errors.quantityGrams.message}</p>
-      )}
+      <div>
+        <input
+          type="number"
+          step="0.01"
+          {...register('quantity', { valueAsNumber: true })}
+          placeholder="Quantity"
+          className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none"
+        />
+        {errors.quantity && <p className="error">{errors.quantity.message}</p>}
+
+        <select {...register('measurement')}>
+          <option value="" disabled hidden>
+            Select a measurement
+          </option>
+          <option value="g">g</option>
+          <option value="lt">lt</option>
+        </select>
+        {errors.measurement && (
+          <p className="error">{errors.measurement.message}</p>
+        )}
+      </div>
 
       <input
         type="number"
@@ -35,9 +46,8 @@ export default function IngredientForm({
         placeholder="Calories"
         className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none"
       />
-      {errors.calories && (
-        <p className="error">{errors.calories.message}</p>
-      )}
+      {errors.calories && <p className="error">{errors.calories.message}</p>}
+
       <input
         type="number"
         step="0.01"
@@ -48,6 +58,7 @@ export default function IngredientForm({
       {errors.carbohydrates && (
         <p className="error">{errors.carbohydrates.message}</p>
       )}
+
       <input
         type="number"
         step="0.01"
@@ -55,9 +66,8 @@ export default function IngredientForm({
         placeholder="Proteins"
         className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none"
       />
-      {errors.proteins && (
-        <p className="error">{errors.proteins.message}</p>
-      )}
+      {errors.proteins && <p className="error">{errors.proteins.message}</p>}
+
       <input
         type="number"
         step="0.01"
@@ -65,9 +75,7 @@ export default function IngredientForm({
         placeholder="Fats"
         className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none"
       />
-      {errors.fats && (
-        <p className="error">{errors.fats.message}</p>
-      )}
+      {errors.fats && <p className="error">{errors.fats.message}</p>}
 
       <div className="flex justify-end gap-2">
         <button

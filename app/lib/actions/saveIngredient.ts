@@ -13,24 +13,25 @@ export async function saveIngredient(data: unknown) {
 
   const {
     name,
-    quantityGrams,
+    quantity,
+    measurement,
     calories,
     carbohydrates,
     proteins,
     fats,
   } = parsed.data;
 
-  // ✅ Normalize to 100g base
-  const multiplier = 100 / quantityGrams;
+  // Normalize to 100g or 100lt base
+  const multiplier = 100 / quantity;
 
   const normalized = {
-  name,
-  calories: Number((calories * multiplier).toFixed(2)),
-  carbohydrates: Number((carbohydrates * multiplier).toFixed(2)),
-  proteins: Number((proteins * multiplier).toFixed(2)),
-  fats: Number((fats * multiplier).toFixed(2)),
-};
-
+    name,
+    isLiquid: measurement === 'g' ? false : true,
+    calories: Number((calories * multiplier).toFixed(2)),
+    carbohydrates: Number((carbohydrates * multiplier).toFixed(2)),
+    proteins: Number((proteins * multiplier).toFixed(2)),
+    fats: Number((fats * multiplier).toFixed(2)),
+  };
 
   const information = supabase;
 

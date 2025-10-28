@@ -2,12 +2,14 @@ import { z } from 'zod';
 
 export const ingredientSchema = z.object({
   name: z.string().min(1, 'Ingredient name is required'),
+  isLiquid: z.boolean().optional(),
 
   // Local-only field — not persisted
-  quantityGrams: z.preprocess(
+  quantity: z.preprocess(
     (val) => Number(val),
     z.number().min(1, 'Must be at least 1g')
   ),
+  measurement: z.enum(['g', 'lt'], 'Measurement is required'),
 
   // Floats — coerced and validated
   calories: z.preprocess(
