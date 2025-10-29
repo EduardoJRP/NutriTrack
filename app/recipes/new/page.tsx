@@ -2,18 +2,35 @@
 
 import Navbar from '@/app/components/Common/Navbar';
 import IngredientModal from '@/app/components/Modals/ingredientModal';
-import { saveIngredient } from '@/app/lib/actions/saveIngredient';
 
+import { saveIngredient } from '@/app/lib/actions/saveIngredient';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+
 import {
   ingredientSchema,
   IngredientFormData,
 } from '@/app/lib/zodSchemas/newIngredient';
-
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import {
+  userIngredientType,
+} from '@/app/lib/zodSchemas/userIngredientSchema';
 
 export default function NewRecipePage() {
+  const fetchIngredients = async () => {
+    try {
+      const res = await fetch('/api/ingredients');
+      const data = await res.json();
+      if (data.success) {
+        setIngredients(data.ingredients);
+      } else {
+        console.error('Error fetching ingredients:', data.error);
+      }
+    } catch (err) {
+      console.error('Fetch failed:', err);
+    }
+  };
+
   const [form, setForm] = useState({
     food: '',
     mealType: '',
@@ -22,21 +39,11 @@ export default function NewRecipePage() {
   });
 
   const [search, setSearch] = useState('');
-  const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
   const [showModal, setShowModal] = useState(false);
-
-  const [ingredients, setIngredients] = useState<string[]>([
-    'Chicken Breast',
-    'Salmon',
-    'Avocado',
-    'Broccoli',
-    'Oats',
-    'Eggs',
-    'Spinach',
-    'Greek Yogurt',
-    'Almonds',
-    'Banana',
-  ]);
+  const [ingredients, setIngredients] = useState<userIngredientType[]>([]);
+  const [selectedIngredients, setSelectedIngredients] = useState<
+    userIngredientType[]
+  >([]);
 
   const {
     register,
@@ -46,14 +53,16 @@ export default function NewRecipePage() {
   } = useForm<IngredientFormData>({
     resolver: zodResolver(ingredientSchema),
   });
-  
+
   const filteredIngredients = ingredients.filter((ingredient) =>
-    ingredient.toLowerCase().includes(search.toLowerCase())
+    ingredient.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  const toggleIngredient = (name: string) => {
+  const toggleIngredient = (item: userIngredientType) => {
     setSelectedIngredients((prev) =>
-      prev.includes(name) ? prev.filter((i) => i !== name) : [...prev, name]
+      prev.some((i) => i.name === item.name)
+        ? prev.filter((i) => i.name !== item.name)
+        : [...prev, item]
     );
   };
 
@@ -63,33 +72,28 @@ export default function NewRecipePage() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-
   const handleClearAll = () => {
     setSelectedIngredients([]);
   };
 
   const handleSaveIngredient = async (data: IngredientFormData) => {
-  // Call the server function
-  const result = await saveIngredient(data);
+    const result = await saveIngredient(data);
 
-  if (!result.success) {
-    console.error(result.error);
-    alert('Failed to save ingredient. Please check your input.');
-    return;
-  }
+    if (!result.success) {
+      console.error(result.error);
+      alert('Failed to save ingredient. Please check your input.');
+      return;
+    }
 
-  // ✅ If saved successfully in Supabase, also update local state
-  if (!ingredients.includes(data.name)) {
-    setIngredients((prev) => [...prev, data.name]);
-  }
-  if (!selectedIngredients.includes(data.name)) {
-    setSelectedIngredients((prev) => [...prev, data.name]);
-  }
+    await fetchIngredients();
 
-  reset();
-  setShowModal(false);
-};
+    reset();
+    setShowModal(false);
+  };
 
+  useEffect(() => {
+    fetchIngredients();
+  }, []);
 
   return (
     <>
@@ -192,17 +196,18 @@ export default function NewRecipePage() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
               {filteredIngredients.map((ingredient) => (
-                <label
-                  key={ingredient}
-                  className="flex items-center gap-2 border rounded-lg px-3 py-2 hover:bg-gray-50 cursor-pointer"
-                >
+                <label key={ingredient.name} className="...">
                   <input
                     type="checkbox"
-                    checked={selectedIngredients.includes(ingredient)}
+                    checked={selectedIngredients.some(
+                      (i) => i.name === ingredient.name
+                    )}
                     onChange={() => toggleIngredient(ingredient)}
                     className="h-4 w-4 accent-green-600"
                   />
-                  <span className="text-sm text-gray-700">{ingredient}</span>
+                  <span className="text-sm text-gray-700">
+                    {ingredient.name}
+                  </span>
                 </label>
               ))}
             </div>
@@ -224,10 +229,10 @@ export default function NewRecipePage() {
         </form>
       </main>
 
-      <IngredientModal 
+      <IngredientModal
         isOpen={showModal}
         onSubmit={handleSaveIngredient}
-        onClose={ () => {
+        onClose={() => {
           setShowModal(false);
           reset();
         }}
