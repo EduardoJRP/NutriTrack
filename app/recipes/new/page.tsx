@@ -10,9 +10,11 @@ import { useForm } from 'react-hook-form';
 
 import {
   ingredientSchema,
-  type IngredientFormData,
+  IngredientFormData,
 } from '@/app/lib/zodSchemas/newIngredient';
 import { userIngredientType } from '@/app/lib/zodSchemas/userIngredientSchema';
+import { recipeSchema, recipeType } from '@/app/lib/zodSchemas/recipeSchema';
+import { saveRecipe } from '@/app/lib/actions/saveRecipe';
 
 export default function NewRecipePage() {
   const fetchIngredients = async () => {
@@ -28,13 +30,6 @@ export default function NewRecipePage() {
       console.error('Fetch failed:', err);
     }
   };
-
-  const [form, setForm] = useState({
-    food: '',
-    mealType: '',
-    isPublic: '',
-    servings: 0,
-  });
 
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -53,7 +48,23 @@ export default function NewRecipePage() {
     reset,
     formState: { errors },
   } = useForm<IngredientFormData>({
-    resolver: zodResolver(ingredientSchema) as any,
+    resolver: zodResolver(ingredientSchema),
+  });
+
+  const {
+    register: registerRecipe,
+    handleSubmit: handleSubmitRecipe,
+    reset: resetRecipe,
+    formState: { errors: recipeErrors },
+  } = useForm<recipeType>({
+    resolver: zodResolver(recipeSchema),
+    defaultValues: {
+      name: '',
+      mealType: '',
+      isPublic: false,
+      servings: 1,
+      ingredients: [],
+    },
   });
 
   const toggleIngredient = (item: userIngredientType) => {
@@ -62,12 +73,6 @@ export default function NewRecipePage() {
         ? prev.filter((i) => i.name !== item.name)
         : [...prev, item]
     );
-  };
-
-  const onChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleClearAll = () => {
@@ -86,6 +91,24 @@ export default function NewRecipePage() {
     await fetchIngredients();
     reset();
     setShowModal(false);
+  };
+
+  const handleSaveRecipe = async (data: recipeType) => {
+    const recipeData = {
+      ...data,
+      ingredients: selectedIngredients,
+    };
+
+    const result = await saveRecipe(recipeData);
+
+    if (!result.success) {
+      console.error(result.error);
+      alert('Failed to save recipe. Please check your input.');
+      return;
+    }
+
+    resetRecipe();
+    setSelectedIngredients([]);
   };
 
   useEffect(() => {
@@ -107,25 +130,23 @@ export default function NewRecipePage() {
         {/* TODO: Image needs fixing */}
         <div className="h-60 w-full bg-gradient-to-br from-green-100 via-emerald-50 to-lime-100 rounded-xl" />
 
-        <form className="mt-6">
+        <form className="mt-6" onSubmit={handleSubmitRecipe(handleSaveRecipe)}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex flex-col gap-4">
               <label className="block font-medium">Recipe Name</label>
               <input
                 className="border rounded px-3 py-2"
-                name="food"
                 placeholder="My Healthy Recipe"
-                value={form.food}
-                onChange={onChange}
+                {...registerRecipe('name')}
                 required
               />
-
+              {recipeErrors.name && (
+                <p className="error">{recipeErrors.name.message}</p>
+              )}
               <label className="block font-medium">Meal Type</label>
               <select
                 className="border rounded px-3 py-2"
-                name="mealType"
-                value={form.mealType}
-                onChange={onChange}
+                {...registerRecipe('mealType')}
                 required
               >
                 <option value="" disabled>
@@ -136,34 +157,47 @@ export default function NewRecipePage() {
                 <option value="dinner">Dinner</option>
                 <option value="snack">Snack</option>
               </select>
+              {recipeErrors.mealType && (
+                <p className="error">{recipeErrors.mealType.message}</p>
+              )}
             </div>
 
             <div className="flex flex-col gap-4">
               <label className="block font-medium">How many servings?</label>
               <input
                 className="border rounded px-3 py-2"
-                name="servings"
                 type="number"
                 placeholder="e.g. 2"
-                value={form.servings}
-                onChange={onChange}
+                {...registerRecipe('servings')}
                 required
               />
+              {recipeErrors.servings && (
+                <p className="error">{recipeErrors.servings.message}</p>
+              )}
 
               <label className="block font-medium">Is it public?</label>
-              <select
-                className="border rounded px-3 py-2"
-                name="isPublic"
-                value={form.isPublic}
-                onChange={onChange}
-                required
-              >
-                <option value="" disabled>
-                  Select One
-                </option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-              </select>
+              <div className="flex gap-4">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    value="true"
+                    {...registerRecipe('isPublic', {
+                      setValueAs: (v) => v === 'true',
+                    })}
+                  />
+                  Yes
+                </label>
+                <label className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    value="false"
+                    {...registerRecipe('isPublic', {
+                      setValueAs: (v) => v === 'true',
+                    })}
+                  />
+                  No
+                </label>
+              </div>
             </div>
           </div>
 
@@ -190,7 +224,6 @@ export default function NewRecipePage() {
                 Clear
               </button>
             </div>
-
             <div>
               {search.length > 0 ? (
                 // Show filtered ingredients
@@ -247,9 +280,7 @@ export default function NewRecipePage() {
                   role="button"
                   tabIndex={0}
                   onClick={() => setShowModal(true)}
-                  onKeyDown={(e) =>
-                    e.key === 'Enter' && setShowModal(true)
-                  }
+                  onKeyDown={(e) => e.key === 'Enter' && setShowModal(true)}
                   className="text-blue-500 underline cursor-pointer hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded"
                 >
                   Add it here
@@ -257,6 +288,24 @@ export default function NewRecipePage() {
                 .
               </div>
             </div>
+          </div>
+          <div className="mt-8 flex gap-4 justify-end">
+            <button
+              className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600"
+              type="submit"
+            >
+              save
+            </button>
+            <button
+              className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
+              type="button"
+              onClick={() => {
+                resetRecipe();
+                setSelectedIngredients([]);
+              }}
+            >
+              cancel
+            </button>
           </div>
         </form>
       </main>
