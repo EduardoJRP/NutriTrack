@@ -10,11 +10,9 @@ import { useForm } from 'react-hook-form';
 
 import {
   ingredientSchema,
-  IngredientFormData,
+  type IngredientFormData,
 } from '@/app/lib/zodSchemas/newIngredient';
-import {
-  userIngredientType,
-} from '@/app/lib/zodSchemas/userIngredientSchema';
+import { userIngredientType } from '@/app/lib/zodSchemas/userIngredientSchema';
 
 export default function NewRecipePage() {
   const fetchIngredients = async () => {
@@ -45,18 +43,18 @@ export default function NewRecipePage() {
     userIngredientType[]
   >([]);
 
+  const filteredIngredients = ingredients.filter((ingredient) =>
+    ingredient.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<IngredientFormData>({
-    resolver: zodResolver(ingredientSchema),
+    resolver: zodResolver(ingredientSchema) as any,
   });
-
-  const filteredIngredients = ingredients.filter((ingredient) =>
-    ingredient.name.toLowerCase().includes(search.toLowerCase())
-  );
 
   const toggleIngredient = (item: userIngredientType) => {
     setSelectedIngredients((prev) =>
@@ -86,7 +84,6 @@ export default function NewRecipePage() {
     }
 
     await fetchIngredients();
-
     reset();
     setShowModal(false);
   };
@@ -170,7 +167,7 @@ export default function NewRecipePage() {
             </div>
           </div>
 
-          {/* 🧂 Ingredient Search + Selection */}
+          {/* Ingredient Search + Selection */}
           <div className="mt-10">
             <label className="text-lg font-semibold mb-3">
               Select Ingredients
@@ -194,36 +191,71 @@ export default function NewRecipePage() {
               </button>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-              {filteredIngredients.map((ingredient) => (
-                <label key={ingredient.name} className="...">
-                  <input
-                    type="checkbox"
-                    checked={selectedIngredients.some(
-                      (i) => i.name === ingredient.name
-                    )}
-                    onChange={() => toggleIngredient(ingredient)}
-                    className="h-4 w-4 accent-green-600"
-                  />
-                  <span className="text-sm text-gray-700">
-                    {ingredient.name}
-                  </span>
-                </label>
-              ))}
-            </div>
+            <div>
+              {search.length > 0 ? (
+                // Show filtered ingredients
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                  {filteredIngredients.map((ingredient) => (
+                    <label
+                      key={ingredient.name}
+                      className="flex items-center gap-2 p-2 border rounded-md hover:bg-gray-50 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedIngredients.some(
+                          (i) => i.name === ingredient.name
+                        )}
+                        onChange={() => toggleIngredient(ingredient)}
+                        className="h-4 w-4 accent-green-600"
+                      />
+                      <span className="text-sm text-gray-700">
+                        {ingredient.name}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              ) : selectedIngredients.length > 0 ? (
+                // Show selected ingredients when search is empty
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                  {selectedIngredients.map((ingredient) => (
+                    <label
+                      key={ingredient.name}
+                      className="flex items-center gap-2 p-2 border rounded-md hover:bg-gray-50 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={true}
+                        onChange={() => toggleIngredient(ingredient)}
+                        className="h-4 w-4 accent-green-600"
+                      />
+                      <span className="text-sm text-gray-700">
+                        {ingredient.name}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              ) : (
+                // Default message
+                <div className="text-gray-500 mt-4">
+                  Type in the search bar the ingredient you are looking for.
+                </div>
+              )}
 
-            <div className="mt-6 text-sm text-gray-600">
-              Not seeing the ingredient you&apos;re looking for?{' '}
-              <span
-                role="button"
-                tabIndex={0}
-                onClick={() => setShowModal(true)}
-                onKeyDown={(e) => e.key === 'Enter' && setShowModal(true)}
-                className="text-blue-500 underline cursor-pointer hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded"
-              >
-                Add it here
-              </span>
-              .
+              <div className="mt-6 text-sm text-gray-600">
+                Not seeing the ingredient you&apos;re looking for?{' '}
+                <span
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setShowModal(true)}
+                  onKeyDown={(e) =>
+                    e.key === 'Enter' && setShowModal(true)
+                  }
+                  className="text-blue-500 underline cursor-pointer hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded"
+                >
+                  Add it here
+                </span>
+                .
+              </div>
             </div>
           </div>
         </form>
