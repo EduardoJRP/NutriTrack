@@ -67,6 +67,17 @@ export default function NewRecipePage() {
     },
   });
 
+ const handleQuantityChange = (id: string, newQuantity: number) => {
+   setSelectedIngredients((prev) =>
+     prev.map((ingredient) =>
+       ingredient.id === id
+         ? { ...ingredient, quantity: isNaN(newQuantity) ? 0 : newQuantity }
+         : ingredient
+      )
+    );
+  };
+
+
   const toggleIngredient = (item: userIngredientType) => {
     setSelectedIngredients((prev) =>
       prev.some((i) => i.name === item.name)
@@ -244,6 +255,14 @@ export default function NewRecipePage() {
                       <span className="text-sm text-gray-700">
                         {ingredient.name}
                       </span>
+                      <input
+                        value={selectedIngredients.find((i) => i.id === ingredient.id)?.quantity ?? 0}
+                        onChange={(e) => handleQuantityChange(ingredient.id, Number(e.target.value))}
+                        required
+                      />
+                      <span className="text-sm text-gray-700">
+                        {ingredient.isLiquid ? "lt" : "g"}
+                      </span>
                     </label>
                   ))}
                 </div>
@@ -263,6 +282,14 @@ export default function NewRecipePage() {
                       />
                       <span className="text-sm text-gray-700">
                         {ingredient.name}
+                      </span>
+                      <input
+                        value={selectedIngredients.find((i) => i.id === ingredient.id)?.quantity ?? 0}
+                        onChange={(e) => handleQuantityChange(ingredient.id, Number(e.target.value))}
+                        required
+                      />
+                      <span className="text-sm text-gray-700">
+                        {ingredient.isLiquid ? "lt" : "g"}
                       </span>
                     </label>
                   ))}

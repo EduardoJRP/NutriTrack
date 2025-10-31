@@ -2,7 +2,7 @@ import { supabaseServer } from '../supabaseServer';
 import { userIngredientSchema } from '../zodSchemas/userIngredientSchema'
 
 export async function fetchUserIngredient() {
-  const { data, error } = await supabaseServer.from('ingredients').select('id, name');
+  const { data, error } = await supabaseServer.from('ingredients').select('id, name, isLiquid');
 
   if (error) {
     return {

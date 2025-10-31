@@ -9,14 +9,18 @@ export async function saveRecipe(data: unknown) {
   }
 
   const { name, mealType, isPublic, servings, ingredients } = parsed.data;
-  const ingredientIds = ingredients.map((ingredient) => ingredient.id);
+
+  const ingredient_recipe = ingredients.map((ingredient) => ({
+    id: ingredient.id,
+    quantity: ingredient.quantity,
+  }));
 
   const { data: result, error } = await supabase.rpc('save_recipe_with_ingredients', {
     _name: name,
     _meal_type: mealType,
     _is_public: isPublic,
     _servings: servings,
-    _ingredient_ids: ingredientIds,
+    _ingredient_recipe: ingredient_recipe,
   });
 
   if (error) {
