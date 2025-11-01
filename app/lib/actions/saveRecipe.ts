@@ -4,6 +4,8 @@ import { recipeSchema } from '../zodSchemas/recipeSchema';
 export async function saveRecipe(data: unknown) {
   const parsed = recipeSchema.safeParse(data);
 
+  console.log("Parsed data:", parsed);
+
   if (!parsed.success) {
     return { success: false, error: parsed.error.flatten() };
   }

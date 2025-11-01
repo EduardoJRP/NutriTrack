@@ -16,6 +16,8 @@ import { userIngredientType } from '@/app/lib/zodSchemas/userIngredientSchema';
 import { recipeSchema, recipeType } from '@/app/lib/zodSchemas/recipeSchema';
 import { saveRecipe } from '@/app/lib/actions/saveRecipe';
 
+type SelectedIngredient = userIngredientType & { quantity: number };
+
 export default function NewRecipePage() {
   const fetchIngredients = async () => {
     try {
@@ -35,7 +37,7 @@ export default function NewRecipePage() {
   const [showModal, setShowModal] = useState(false);
   const [ingredients, setIngredients] = useState<userIngredientType[]>([]);
   const [selectedIngredients, setSelectedIngredients] = useState<
-    userIngredientType[]
+    SelectedIngredient[]
   >([]);
 
   const filteredIngredients = ingredients.filter((ingredient) =>
@@ -67,23 +69,36 @@ export default function NewRecipePage() {
     },
   });
 
- const handleQuantityChange = (id: string, newQuantity: number) => {
-   setSelectedIngredients((prev) =>
-     prev.map((ingredient) =>
-       ingredient.id === id
-         ? { ...ingredient, quantity: isNaN(newQuantity) ? 0 : newQuantity }
-         : ingredient
-      )
-    );
+  const handleQuantityChange = (id: string | number, newQuantity: number) => {
+    const qty = Number.isNaN(newQuantity) ? 0 : newQuantity;
+
+    setSelectedIngredients((prev) => {
+      const exists = prev.some((ing) => String(ing.id) === String(id));
+      if (exists) {
+        return prev.map((ingredient) =>
+          String(ingredient.id) === String(id)
+            ? { ...ingredient, quantity: qty }
+            : ingredient
+        );
+      }
+
+      const source = ingredients.find((ing) => String(ing.id) === String(id));
+      if (source) {
+        return [...prev, { ...source, quantity: qty } as SelectedIngredient];
+      }
+
+      return prev;
+    });
   };
 
-
   const toggleIngredient = (item: userIngredientType) => {
-    setSelectedIngredients((prev) =>
-      prev.some((i) => i.name === item.name)
-        ? prev.filter((i) => i.name !== item.name)
-        : [...prev, item]
-    );
+    setSelectedIngredients((prev) => {
+      const exists = prev.some((i) => String(i.id) === String(item.id));
+      if (exists) {
+        return prev.filter((i) => String(i.id) !== String(item.id));
+      }
+      return [...prev, { ...item, quantity: 0 }];
+    });
   };
 
   const handleClearAll = () => {
@@ -107,8 +122,13 @@ export default function NewRecipePage() {
   const handleSaveRecipe = async (data: recipeType) => {
     const recipeData = {
       ...data,
-      ingredients: selectedIngredients,
+      ingredients: selectedIngredients.map(({ quantity, ...rest }) => ({
+        ...rest,
+        quantity,
+      })),
     };
+
+    console.log("Recipe Data to be saved:", recipeData);
 
     const result = await saveRecipe(recipeData);
 
@@ -241,13 +261,13 @@ export default function NewRecipePage() {
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                   {filteredIngredients.map((ingredient) => (
                     <label
-                      key={ingredient.name}
+                      key={String(ingredient.id)}
                       className="flex items-center gap-2 p-2 border rounded-md hover:bg-gray-50 cursor-pointer"
                     >
                       <input
                         type="checkbox"
                         checked={selectedIngredients.some(
-                          (i) => i.name === ingredient.name
+                          (i) => String(i.id) === String(ingredient.id)
                         )}
                         onChange={() => toggleIngredient(ingredient)}
                         className="h-4 w-4 accent-green-600"
@@ -255,13 +275,26 @@ export default function NewRecipePage() {
                       <span className="text-sm text-gray-700">
                         {ingredient.name}
                       </span>
+
                       <input
-                        value={selectedIngredients.find((i) => i.id === ingredient.id)?.quantity ?? 0}
-                        onChange={(e) => handleQuantityChange(ingredient.id, Number(e.target.value))}
-                        required
+                        type="number"
+                        className="w-20 border rounded px-2 py-1"
+                        min={0}
+                        value={
+                          selectedIngredients.find(
+                            (i) => String(i.id) === String(ingredient.id)
+                          )?.quantity ?? 0
+                        }
+                        onChange={(e) =>
+                          handleQuantityChange(
+                            ingredient.id,
+                            Number(e.target.value)
+                          )
+                        }
+                        aria-label={`Quantity for ${ingredient.name}`}
                       />
                       <span className="text-sm text-gray-700">
-                        {ingredient.isLiquid ? "lt" : "g"}
+                        {ingredient.isLiquid ? 'lt' : 'g'}
                       </span>
                     </label>
                   ))}
@@ -271,7 +304,7 @@ export default function NewRecipePage() {
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                   {selectedIngredients.map((ingredient) => (
                     <label
-                      key={ingredient.name}
+                      key={String(ingredient.id)}
                       className="flex items-center gap-2 p-2 border rounded-md hover:bg-gray-50 cursor-pointer"
                     >
                       <input
@@ -284,12 +317,20 @@ export default function NewRecipePage() {
                         {ingredient.name}
                       </span>
                       <input
-                        value={selectedIngredients.find((i) => i.id === ingredient.id)?.quantity ?? 0}
-                        onChange={(e) => handleQuantityChange(ingredient.id, Number(e.target.value))}
+                        type="number"
+                        className="w-20 border rounded px-2 py-1"
+                        min={0}
+                        value={ingredient.quantity ?? 0}
+                        onChange={(e) =>
+                          handleQuantityChange(
+                            ingredient.id,
+                            Number(e.target.value)
+                          )
+                        }
                         required
                       />
                       <span className="text-sm text-gray-700">
-                        {ingredient.isLiquid ? "lt" : "g"}
+                        {ingredient.isLiquid ? 'lt' : 'g'}
                       </span>
                     </label>
                   ))}
