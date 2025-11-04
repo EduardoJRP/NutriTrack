@@ -16,7 +16,7 @@ import { userIngredientType } from '@/app/lib/zodSchemas/userIngredientSchema';
 import { recipeSchema, recipeType } from '@/app/lib/zodSchemas/recipeSchema';
 import { saveRecipe } from '@/app/lib/actions/saveRecipe';
 
-type SelectedIngredient = userIngredientType & { quantity: number };
+type ingredientType = userIngredientType & { quantity: number, isChecked: boolean };
 
 export default function NewRecipePage() {
   const fetchIngredients = async () => {
@@ -35,10 +35,7 @@ export default function NewRecipePage() {
 
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [ingredients, setIngredients] = useState<userIngredientType[]>([]);
-  const [selectedIngredients, setSelectedIngredients] = useState<
-    SelectedIngredient[]
-  >([]);
+  const [ingredients, setIngredients] = useState<ingredientType[]>([]);
 
   const filteredIngredients = ingredients.filter((ingredient) =>
     ingredient.name.toLowerCase().includes(search.toLowerCase())
@@ -69,40 +66,28 @@ export default function NewRecipePage() {
     },
   });
 
-  const handleQuantityChange = (id: string | number, newQuantity: number) => {
-    const qty = Number.isNaN(newQuantity) ? 0 : newQuantity;
+  const handleQuantityChange = (id: string , newQuantity: number) => {
+    const saveQuantity = Number.isNaN(newQuantity) ? 0 : newQuantity;
 
-    setSelectedIngredients((prev) => {
-      const exists = prev.some((ing) => String(ing.id) === String(id));
-      if (exists) {
-        return prev.map((ingredient) =>
-          String(ingredient.id) === String(id)
-            ? { ...ingredient, quantity: qty }
-            : ingredient
-        );
-      }
-
-      const source = ingredients.find((ing) => String(ing.id) === String(id));
-      if (source) {
-        return [...prev, { ...source, quantity: qty } as SelectedIngredient];
-      }
-
-      return prev;
-    });
+    setIngredients((prev) => 
+      prev.map((ingredient) => (
+        ingredient.id === id ? {...ingredient, quantity: saveQuantity} : ingredient
+      )
+    ));
   };
 
-  const toggleIngredient = (item: userIngredientType) => {
-    setSelectedIngredients((prev) => {
-      const exists = prev.some((i) => String(i.id) === String(item.id));
-      if (exists) {
-        return prev.filter((i) => String(i.id) !== String(item.id));
-      }
-      return [...prev, { ...item, quantity: 0 }];
-    });
+  const toggleIngredient = (item: ingredientType) => {
+    setIngredients((prev) => 
+      prev.map((ingredient) => 
+        ingredient.id === item.id
+        ? {...ingredient, isChecked: !ingredient.isChecked}
+        : ingredient
+      )
+    );
   };
 
   const handleClearAll = () => {
-    setSelectedIngredients([]);
+    setIngredients((prev) => prev.map((ingredient) => ({...ingredient, isChecked: false, quantity: 0})));
   };
 
   const handleSaveIngredient = async (data: IngredientFormData) => {
@@ -120,12 +105,16 @@ export default function NewRecipePage() {
   };
 
   const handleSaveRecipe = async (data: recipeType) => {
+    // Adjusted for omission of isChecked
     const recipeData = {
       ...data,
-      ingredients: selectedIngredients.map(({ quantity, ...rest }) => ({
-        ...rest,
-        quantity,
-      })),
+      ingredients: ingredients
+        .filter((ingredient) => ingredient.isChecked)
+        .map((ingredient) => {
+          const copy = { ...ingredient };
+          delete (copy as Partial<typeof ingredient>).isChecked;
+          return copy;
+        }),
     };
 
     console.log("Recipe Data to be saved:", recipeData);
@@ -139,7 +128,6 @@ export default function NewRecipePage() {
     }
 
     resetRecipe();
-    setSelectedIngredients([]);
   };
 
   useEffect(() => {
@@ -258,84 +246,47 @@ export default function NewRecipePage() {
             <div>
               {search.length > 0 ? (
                 // Show filtered ingredients
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                  {filteredIngredients.map((ingredient) => (
-                    <label
-                      key={String(ingredient.id)}
-                      className="flex items-center gap-2 p-2 border rounded-md hover:bg-gray-50 cursor-pointer"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={selectedIngredients.some(
-                          (i) => String(i.id) === String(ingredient.id)
-                        )}
-                        onChange={() => toggleIngredient(ingredient)}
-                        className="h-4 w-4 accent-green-600"
-                      />
-                      <span className="text-sm text-gray-700">
-                        {ingredient.name}
-                      </span>
-
-                      <input
-                        type="number"
-                        className="w-20 border rounded px-2 py-1"
-                        min={0}
-                        value={
-                          selectedIngredients.find(
-                            (i) => String(i.id) === String(ingredient.id)
-                          )?.quantity ?? 0
-                        }
-                        onChange={(e) =>
-                          handleQuantityChange(
-                            ingredient.id,
-                            Number(e.target.value)
-                          )
-                        }
-                        aria-label={`Quantity for ${ingredient.name}`}
-                      />
-                      <span className="text-sm text-gray-700">
-                        {ingredient.isLiquid ? 'lt' : 'g'}
-                      </span>
-                    </label>
-                  ))}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2"> 
+                  {filteredIngredients.map((ingredient) => ( 
+                    <label key={String(ingredient.id)} 
+                      className="flex items-center gap-2 p-2 border rounded-md hover:bg-gray-50 cursor-pointer" 
+                    > 
+                    <input type="checkbox" 
+                      checked={ingredient.isChecked} 
+                      onChange={() => toggleIngredient(ingredient)} 
+                      className="h-4 w-4 accent-green-600" 
+                    /> 
+                    <span className="text-sm text-gray-700"> {ingredient.name} </span> 
+                    <input type="number" 
+                      className="w-20 border rounded px-2 py-1" 
+                      min={0} value={ingredient.quantity} 
+                      onChange={(e) => handleQuantityChange( ingredient.id, Number(e.target.value) ) } 
+                    /> 
+                    <span className="text-sm text-gray-700"> {ingredient.isLiquid ? 'lt' : 'g'} </span> 
+                    </label> 
+                  ))} 
                 </div>
-              ) : selectedIngredients.length > 0 ? (
-                // Show selected ingredients when search is empty
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                  {selectedIngredients.map((ingredient) => (
-                    <label
-                      key={String(ingredient.id)}
-                      className="flex items-center gap-2 p-2 border rounded-md hover:bg-gray-50 cursor-pointer"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={true}
-                        onChange={() => toggleIngredient(ingredient)}
-                        className="h-4 w-4 accent-green-600"
-                      />
-                      <span className="text-sm text-gray-700">
-                        {ingredient.name}
-                      </span>
-                      <input
-                        type="number"
-                        className="w-20 border rounded px-2 py-1"
-                        min={0}
-                        value={ingredient.quantity ?? 0}
-                        onChange={(e) =>
-                          handleQuantityChange(
-                            ingredient.id,
-                            Number(e.target.value)
-                          )
-                        }
-                        required
-                      />
-                      <span className="text-sm text-gray-700">
-                        {ingredient.isLiquid ? 'lt' : 'g'}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-              ) : (
+              ) : ingredients.some((ingredient) => ingredient.isChecked) ?
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2"> 
+                  {ingredients.filter((ingredient) => ingredient.isChecked).map((ingredient) => (
+                    <label key={String(ingredient.id)} 
+                      className="flex items-center gap-2 p-2 border rounded-md hover:bg-gray-50 cursor-pointer" 
+                    > 
+                    <input type="checkbox" 
+                      checked={ingredient.isChecked} 
+                      onChange={() => toggleIngredient(ingredient)} 
+                      className="h-4 w-4 accent-green-600" 
+                    /> 
+                    <span className="text-sm text-gray-700"> {ingredient.name} </span> 
+                    <input type="number" 
+                      className="w-20 border rounded px-2 py-1" 
+                      min={0} value={ingredient.quantity} 
+                      onChange={(e) => handleQuantityChange( ingredient.id, Number(e.target.value) ) } 
+                    /> 
+                    <span className="text-sm text-gray-700"> {ingredient.isLiquid ? 'lt' : 'g'} </span> 
+                    </label> 
+                  ))} 
+                </div> : (
                 // Default message
                 <div className="text-gray-500 mt-4">
                   Type in the search bar the ingredient you are looking for.
@@ -369,7 +320,7 @@ export default function NewRecipePage() {
               type="button"
               onClick={() => {
                 resetRecipe();
-                setSelectedIngredients([]);
+                setIngredients([]);
               }}
             >
               cancel
