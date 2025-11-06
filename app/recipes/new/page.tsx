@@ -16,7 +16,10 @@ import { userIngredientType } from '@/app/lib/zodSchemas/userIngredientSchema';
 import { recipeSchema, recipeType } from '@/app/lib/zodSchemas/recipeSchema';
 import { saveRecipe } from '@/app/lib/actions/saveRecipe';
 
-type ingredientType = userIngredientType & { quantity: number, isChecked: boolean };
+type ingredientType = Omit<userIngredientType, 'quantity'> & { 
+  quantity: string; 
+  isChecked: boolean;
+};
 
 export default function NewRecipePage() {
   const fetchIngredients = async () => {
@@ -66,12 +69,10 @@ export default function NewRecipePage() {
     },
   });
 
-  const handleQuantityChange = (id: string , newQuantity: number) => {
-    const saveQuantity = Number.isNaN(newQuantity) ? 0 : newQuantity;
-
+  const handleQuantityChange = (id: string , value: string) => {
     setIngredients((prev) => 
       prev.map((ingredient) => (
-        ingredient.id === id ? {...ingredient, quantity: saveQuantity} : ingredient
+        ingredient.id === id ? {...ingredient, quantity: value} : ingredient
       )
     ));
   };
@@ -80,14 +81,18 @@ export default function NewRecipePage() {
     setIngredients((prev) => 
       prev.map((ingredient) => 
         ingredient.id === item.id
-        ? {...ingredient, isChecked: !ingredient.isChecked}
+        ? {...ingredient, isChecked: !ingredient.isChecked, 
+            quantity: !ingredient.isChecked && (!ingredient.quantity || ingredient.quantity === '0')
+              ? '1'
+              : ingredient.quantity, 
+          }
         : ingredient
       )
     );
   };
 
   const handleClearAll = () => {
-    setIngredients((prev) => prev.map((ingredient) => ({...ingredient, isChecked: false, quantity: 0})));
+    setIngredients((prev) => prev.map((ingredient) => ({...ingredient, isChecked: false, quantity: '0'})));
   };
 
   const handleSaveIngredient = async (data: IngredientFormData) => {
@@ -113,6 +118,7 @@ export default function NewRecipePage() {
         .map((ingredient) => {
           const copy = { ...ingredient };
           delete (copy as Partial<typeof ingredient>).isChecked;
+          copy.quantity = copy.quantity;
           return copy;
         }),
     };
@@ -260,7 +266,7 @@ export default function NewRecipePage() {
                     <input type="number" 
                       className="w-20 border rounded px-2 py-1" 
                       min={0} value={ingredient.quantity} 
-                      onChange={(e) => handleQuantityChange( ingredient.id, Number(e.target.value) ) } 
+                      onChange={(e) => handleQuantityChange(ingredient.id, e.target.value) } 
                     /> 
                     <span className="text-sm text-gray-700"> {ingredient.isLiquid ? 'lt' : 'g'} </span> 
                     </label> 
@@ -281,7 +287,7 @@ export default function NewRecipePage() {
                     <input type="number" 
                       className="w-20 border rounded px-2 py-1" 
                       min={0} value={ingredient.quantity} 
-                      onChange={(e) => handleQuantityChange( ingredient.id, Number(e.target.value) ) } 
+                      onChange={(e) => handleQuantityChange(ingredient.id, e.target.value) } 
                     /> 
                     <span className="text-sm text-gray-700"> {ingredient.isLiquid ? 'lt' : 'g'} </span> 
                     </label> 

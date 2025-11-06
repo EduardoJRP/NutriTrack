@@ -3,7 +3,9 @@ import { userIngredientSchema } from './userIngredientSchema';
 
 export const recipeSchema = z.object({
   name: z.string().min(1, 'Recipe name is required'),
-  mealType: z.enum(['breakfast', 'lunch', 'diner', 'snack'], 'Meal type is required'),
+  mealType: z.enum(['breakfast', 'lunch', 'dinner', 'snack'])
+    .or(z.literal(''))
+    .refine((val) => val !== '', {message: 'Mealtype is required'}),
   isPublic: z.boolean(),
   servings: z.preprocess(
     (val) => Number(val),
