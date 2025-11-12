@@ -1,5 +1,5 @@
 import { supabase } from '../supabaseClient';
-import { ingredientSchema } from '../zodSchemas/newIngredient';
+import { ingredientSchema } from '../zodSchemas/newIngredientSchema';
 
 export async function saveIngredient(data: unknown) {
   const parsed = ingredientSchema.safeParse(data);

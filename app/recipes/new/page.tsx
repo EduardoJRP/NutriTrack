@@ -8,16 +8,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import {
-  ingredientSchema,
-  IngredientFormData,
-} from '@/app/lib/zodSchemas/newIngredient';
+import { NewIngredientType } from '@/app/lib/zodSchemas/newIngredientSchema';
 import { userIngredientType } from '@/app/lib/zodSchemas/userIngredientSchema';
 import { recipeSchema, recipeType } from '@/app/lib/zodSchemas/recipeSchema';
 import { saveRecipe } from '@/app/lib/actions/saveRecipe';
 
-type ingredientType = Omit<userIngredientType, 'quantity'> & { 
-  quantity: string; 
+type ingredientType = Omit<userIngredientType, 'quantity'> & {
+  quantity: string;
   isChecked: boolean;
 };
 
@@ -45,15 +42,6 @@ export default function NewRecipePage() {
   );
 
   const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<IngredientFormData>({
-    resolver: zodResolver(ingredientSchema),
-  });
-
-  const {
     register: registerRecipe,
     handleSubmit: handleSubmitRecipe,
     reset: resetRecipe,
@@ -69,33 +57,43 @@ export default function NewRecipePage() {
     },
   });
 
-  const handleQuantityChange = (id: string , value: string) => {
-    setIngredients((prev) => 
-      prev.map((ingredient) => (
-        ingredient.id === id ? {...ingredient, quantity: value} : ingredient
+  const handleQuantityChange = (id: string, value: string) => {
+    setIngredients((prev) =>
+      prev.map((ingredient) =>
+        ingredient.id === id ? { ...ingredient, quantity: value } : ingredient
       )
-    ));
+    );
   };
 
   const toggleIngredient = (item: ingredientType) => {
-    setIngredients((prev) => 
-      prev.map((ingredient) => 
+    setIngredients((prev) =>
+      prev.map((ingredient) =>
         ingredient.id === item.id
-        ? {...ingredient, isChecked: !ingredient.isChecked, 
-            quantity: !ingredient.isChecked && (!ingredient.quantity || ingredient.quantity === '0')
-              ? '1'
-              : ingredient.quantity, 
-          }
-        : ingredient
+          ? {
+              ...ingredient,
+              isChecked: !ingredient.isChecked,
+              quantity:
+                !ingredient.isChecked &&
+                (!ingredient.quantity || ingredient.quantity === '0')
+                  ? '1'
+                  : ingredient.quantity,
+            }
+          : ingredient
       )
     );
   };
 
   const handleClearAll = () => {
-    setIngredients((prev) => prev.map((ingredient) => ({...ingredient, isChecked: false, quantity: '0'})));
+    setIngredients((prev) =>
+      prev.map((ingredient) => ({
+        ...ingredient,
+        isChecked: false,
+        quantity: '0',
+      }))
+    );
   };
 
-  const handleSaveIngredient = async (data: IngredientFormData) => {
+  const handleSaveIngredient = async (data: NewIngredientType) => {
     const result = await saveIngredient(data);
 
     if (!result.success) {
@@ -105,7 +103,6 @@ export default function NewRecipePage() {
     }
 
     await fetchIngredients();
-    reset();
     setShowModal(false);
   };
 
@@ -123,7 +120,7 @@ export default function NewRecipePage() {
         }),
     };
 
-    console.log("Recipe Data to be saved:", recipeData);
+    console.log('Recipe Data to be saved:', recipeData);
 
     const result = await saveRecipe(recipeData);
 
@@ -252,47 +249,74 @@ export default function NewRecipePage() {
             <div>
               {search.length > 0 ? (
                 // Show filtered ingredients
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2"> 
-                  {filteredIngredients.map((ingredient) => ( 
-                    <label key={String(ingredient.id)} 
-                      className="flex items-center gap-2 p-2 border rounded-md hover:bg-gray-50 cursor-pointer" 
-                    > 
-                    <input type="checkbox" 
-                      checked={ingredient.isChecked} 
-                      onChange={() => toggleIngredient(ingredient)} 
-                      className="h-4 w-4 accent-green-600" 
-                    /> 
-                    <span className="text-sm text-gray-700"> {ingredient.name} </span> 
-                    <input type="number" 
-                      className="w-20 border rounded px-2 py-1" 
-                      min={0} value={ingredient.quantity} 
-                      onChange={(e) => handleQuantityChange(ingredient.id, e.target.value) } 
-                    /> 
-                    <span className="text-sm text-gray-700"> {ingredient.isLiquid ? 'lt' : 'g'} </span> 
-                    </label> 
-                  ))} 
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                  {filteredIngredients.map((ingredient) => (
+                    <label
+                      key={String(ingredient.id)}
+                      className="flex items-center gap-2 p-2 border rounded-md hover:bg-gray-50 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={ingredient.isChecked}
+                        onChange={() => toggleIngredient(ingredient)}
+                        className="h-4 w-4 accent-green-600"
+                      />
+                      <span className="text-sm text-gray-700">
+                        {' '}
+                        {ingredient.name}{' '}
+                      </span>
+                      <input
+                        type="number"
+                        className="w-20 border rounded px-2 py-1"
+                        min={0}
+                        value={ingredient.quantity}
+                        onChange={(e) =>
+                          handleQuantityChange(ingredient.id, e.target.value)
+                        }
+                      />
+                      <span className="text-sm text-gray-700">
+                        {' '}
+                        {ingredient.isLiquid ? 'lt' : 'g'}{' '}
+                      </span>
+                    </label>
+                  ))}
                 </div>
-              ) : ingredients.some((ingredient) => ingredient.isChecked) ?
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2"> 
-                  {ingredients.filter((ingredient) => ingredient.isChecked).map((ingredient) => (
-                    <label key={String(ingredient.id)} 
-                      className="flex items-center gap-2 p-2 border rounded-md hover:bg-gray-50 cursor-pointer" 
-                    > 
-                    <input type="checkbox" 
-                      checked={ingredient.isChecked} 
-                      onChange={() => toggleIngredient(ingredient)} 
-                      className="h-4 w-4 accent-green-600" 
-                    /> 
-                    <span className="text-sm text-gray-700"> {ingredient.name} </span> 
-                    <input type="number" 
-                      className="w-20 border rounded px-2 py-1" 
-                      min={0} value={ingredient.quantity} 
-                      onChange={(e) => handleQuantityChange(ingredient.id, e.target.value) } 
-                    /> 
-                    <span className="text-sm text-gray-700"> {ingredient.isLiquid ? 'lt' : 'g'} </span> 
-                    </label> 
-                  ))} 
-                </div> : (
+              ) : ingredients.some((ingredient) => ingredient.isChecked) ? (
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                  {ingredients
+                    .filter((ingredient) => ingredient.isChecked)
+                    .map((ingredient) => (
+                      <label
+                        key={String(ingredient.id)}
+                        className="flex items-center gap-2 p-2 border rounded-md hover:bg-gray-50 cursor-pointer"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={ingredient.isChecked}
+                          onChange={() => toggleIngredient(ingredient)}
+                          className="h-4 w-4 accent-green-600"
+                        />
+                        <span className="text-sm text-gray-700">
+                          {' '}
+                          {ingredient.name}{' '}
+                        </span>
+                        <input
+                          type="number"
+                          className="w-20 border rounded px-2 py-1"
+                          min={0}
+                          value={ingredient.quantity}
+                          onChange={(e) =>
+                            handleQuantityChange(ingredient.id, e.target.value)
+                          }
+                        />
+                        <span className="text-sm text-gray-700">
+                          {' '}
+                          {ingredient.isLiquid ? 'lt' : 'g'}{' '}
+                        </span>
+                      </label>
+                    ))}
+                </div>
+              ) : (
                 // Default message
                 <div className="text-gray-500 mt-4">
                   Type in the search bar the ingredient you are looking for.
@@ -340,12 +364,8 @@ export default function NewRecipePage() {
         onSubmit={handleSaveIngredient}
         onClose={() => {
           setShowModal(false);
-          reset();
         }}
-        register={register}
-        handleSubmit={handleSubmit}
-        reset={reset}
-        errors={errors}
+        defaultValues={{}}
       />
     </>
   );

@@ -1,4 +1,4 @@
-import { IngredientFormData } from 'app/lib/zodSchemas/newIngredient';
+import { IngredientFormData } from '@/app/lib/zodSchemas/newIngredientSchema';
 import {
   UseFormRegister,
   UseFormHandleSubmit,
