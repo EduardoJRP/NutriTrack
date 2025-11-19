@@ -8,10 +8,12 @@ export const newIngredientSchema = z.object({
   measurement: z.enum(['g', 'lt'], { message: 'Measurement is required' }),
 
   calories: z.coerce.number().min(0, 'Calories must be a number >= 0'),
-  carbohydrates: z.coerce.number().min(0, 'Carbohydrates must be a number >= 0'),
+  carbohydrates: z.coerce
+    .number()
+    .min(0, 'Carbohydrates must be a number >= 0'),
   proteins: z.coerce.number().min(0, 'Proteins must be a number >= 0'),
   fats: z.coerce.number().min(0, 'Fats must be a number >= 0'),
 });
 
-
 export type NewIngredientType = z.infer<typeof newIngredientSchema>;
+export type NewIngredientInput = z.input<typeof newIngredientSchema>;

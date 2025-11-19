@@ -2,14 +2,14 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { newIngredientSchema, NewIngredientType } from "@/app/lib/zodSchemas/newIngredientSchema";
+import { newIngredientSchema, NewIngredientInput } from "@/app/lib/zodSchemas/newIngredientSchema";
 import { useEffect } from "react";
 
 interface IngredientModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: NewIngredientType) => void;
-  defaultValues?: Partial<NewIngredientType>
+  onSubmit: (data: NewIngredientInput) => void;
+  defaultValues?: Partial<NewIngredientInput>;
 }
 
 export default function IngredientModal({
@@ -23,7 +23,7 @@ export default function IngredientModal({
   handleSubmit,
   reset,
   formState: { errors },
-} = useForm<NewIngredientType>({
+} = useForm<NewIngredientInput>({
   resolver: zodResolver(newIngredientSchema),
   defaultValues: {},
 });

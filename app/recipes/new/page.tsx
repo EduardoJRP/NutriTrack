@@ -6,9 +6,9 @@ import IngredientModal from '@/app/components/Modals/ingredientModal';
 import { saveIngredient } from '@/app/lib/actions/saveIngredient';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { NewIngredientType } from '@/app/lib/zodSchemas/newIngredientSchema';
+import { NewIngredientInput } from '@/app/lib/zodSchemas/newIngredientSchema';
 import { userIngredientType } from '@/app/lib/zodSchemas/userIngredientSchema';
 import { recipeSchema, recipeType } from '@/app/lib/zodSchemas/recipeSchema';
 import { saveRecipe } from '@/app/lib/actions/saveRecipe';
@@ -93,7 +93,7 @@ export default function NewRecipePage() {
     );
   };
 
-  const handleSaveIngredient = async (data: NewIngredientType) => {
+  const handleSaveIngredient: SubmitHandler<NewIngredientInput> = async (data) => {
     const result = await saveIngredient(data);
 
     if (!result.success) {

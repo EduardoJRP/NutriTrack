@@ -1,33 +1,35 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-// ✅ Schema
 const userSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   age: z.coerce.number().min(0, 'Age must be positive'),
 })
 
-// ✅ Type from schema
-type UserFormData = z.infer<typeof userSchema>
+// Use the schema *input* type so useForm and zodResolver agree
+type UserFormInput = z.input<typeof userSchema>
+type UserParsed = z.infer<typeof userSchema>
 
 export default function UserForm() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<UserFormData>({
-    resolver: zodResolver(userSchema),
+  } = useForm<UserFormInput>({
     defaultValues: {
       name: '',
-      age: 0,
+      age: '', // raw input (coercion will handle conversion)
     },
+    resolver: zodResolver(userSchema),
   })
 
-  const onSubmit = (data: UserFormData) => {
-    console.log('✅ Form submitted:', data)
+  // accept the raw input type, then parse/coerce to the final shape
+  const onSubmit: SubmitHandler<UserFormInput> = (data) => {
+    const parsed: UserParsed = userSchema.parse(data) // will coerce age -> number
+    console.log('✅ Form submitted:', parsed)
   }
 
   return (
@@ -48,7 +50,7 @@ export default function UserForm() {
       {errors.age && <p className="text-red-500">{errors.age.message}</p>}
 
       <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded">
-        Save
+        Submit
       </button>
     </form>
   )
