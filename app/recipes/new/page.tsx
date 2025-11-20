@@ -9,11 +9,11 @@ import { useState, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { NewIngredientInput } from '@/app/lib/zodSchemas/newIngredientSchema';
-import { userIngredientType } from '@/app/lib/zodSchemas/userIngredientSchema';
-import { recipeSchema, recipeType } from '@/app/lib/zodSchemas/recipeSchema';
+import { UserIngredientType } from '@/app/lib/zodSchemas/userIngredientSchema';
+import { recipeSchema, RecipeInput } from '@/app/lib/zodSchemas/recipeSchema';
 import { saveRecipe } from '@/app/lib/actions/saveRecipe';
 
-type ingredientType = Omit<userIngredientType, 'quantity'> & {
+type ingredientType = Omit<UserIngredientType, 'quantity'> & {
   quantity: string;
   isChecked: boolean;
 };
@@ -46,7 +46,7 @@ export default function NewRecipePage() {
     handleSubmit: handleSubmitRecipe,
     reset: resetRecipe,
     formState: { errors: recipeErrors },
-  } = useForm<recipeType>({
+  } = useForm<RecipeInput>({
     resolver: zodResolver(recipeSchema),
     defaultValues: {
       name: '',
@@ -93,7 +93,9 @@ export default function NewRecipePage() {
     );
   };
 
-  const handleSaveIngredient: SubmitHandler<NewIngredientInput> = async (data) => {
+  const handleSaveIngredient: SubmitHandler<NewIngredientInput> = async (
+    data
+  ) => {
     const result = await saveIngredient(data);
 
     if (!result.success) {
@@ -106,8 +108,7 @@ export default function NewRecipePage() {
     setShowModal(false);
   };
 
-  const handleSaveRecipe = async (data: recipeType) => {
-    // Adjusted for omission of isChecked
+  const handleSaveRecipe = async (data: RecipeInput) => {
     const recipeData = {
       ...data,
       ingredients: ingredients

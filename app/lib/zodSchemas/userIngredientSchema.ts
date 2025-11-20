@@ -10,4 +10,5 @@ export const userIngredientSchema = z.object({
   isLiquid: z.boolean(),
 });
 
-export type userIngredientType = z.infer<typeof userIngredientSchema>;
+export type UserIngredientType = z.infer<typeof userIngredientSchema>;
+export type UserIngredientInput = z.input<typeof userIngredientSchema>;

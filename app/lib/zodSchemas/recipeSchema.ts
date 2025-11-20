@@ -14,4 +14,5 @@ export const recipeSchema = z.object({
   ingredients: z.array(userIngredientSchema).min(1, 'At least one ingredient is required'),
 });
 
-export type recipeType = z.infer<typeof recipeSchema>
+export type RecipeType = z.infer<typeof recipeSchema>
+export type RecipeInput = z.input<typeof recipeSchema>;
