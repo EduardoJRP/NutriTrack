@@ -23,8 +23,15 @@ export default function NewRecipePage() {
     try {
       const res = await fetch('/api/ingredients');
       const data = await res.json();
+
       if (data.success) {
-        setIngredients(data.ingredients);
+        setIngredients(
+          data.ingredients.map((ingredient: UserIngredientType) => ({
+            ...ingredient,
+            quantity: '0',
+            isChecked: false,
+          }))
+        );
       } else {
         console.error('Error fetching ingredients:', data.error);
       }
@@ -366,7 +373,15 @@ export default function NewRecipePage() {
         onClose={() => {
           setShowModal(false);
         }}
-        defaultValues={{}}
+        defaultValues={{
+          name: '',
+          quantity: 100,
+          measurement: 'g',
+          calories: 0,
+          carbohydrates: 0,
+          proteins: 0,
+          fats: 0,
+        }}
       />
     </>
   );
