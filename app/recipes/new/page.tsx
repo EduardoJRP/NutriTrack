@@ -52,6 +52,7 @@ export default function NewRecipePage() {
     register: registerRecipe,
     handleSubmit: handleSubmitRecipe,
     reset: resetRecipe,
+    setValue: setValueRecipe,
     formState: { errors: recipeErrors },
   } = useForm<RecipeInput>({
     resolver: zodResolver(recipeSchema),
@@ -145,6 +146,19 @@ export default function NewRecipePage() {
     fetchIngredients();
   }, []);
 
+  useEffect(() => {
+    const selected = ingredients
+      .filter((i) => i.isChecked)
+      .map((i) => ({
+        id: i.id,
+        name: i.name,
+        isLiquid: i.isLiquid,
+        quantity: Number(i.quantity),
+      }));
+
+    setValueRecipe('ingredients', selected, { shouldValidate: true });
+  }, [ingredients, setValueRecipe]);
+
   return (
     <>
       <Navbar />
@@ -207,26 +221,18 @@ export default function NewRecipePage() {
 
               <label className="block font-medium">Is it public?</label>
               <div className="flex gap-4">
-                <label className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    value="true"
-                    {...registerRecipe('isPublic', {
-                      setValueAs: (v) => v === 'true',
-                    })}
-                  />
-                  Yes
-                </label>
-                <label className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    value="false"
-                    {...registerRecipe('isPublic', {
-                      setValueAs: (v) => v === 'true',
-                    })}
-                  />
-                  No
-                </label>
+                <select
+                  {...registerRecipe('isPublic', {
+                    setValueAs: (v) => v === 'true',
+                  })}
+                >
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+
+                {recipeErrors.isPublic && (
+                  <p className="error">{recipeErrors.isPublic.message}</p>
+                )}
               </div>
             </div>
           </div>
@@ -325,10 +331,14 @@ export default function NewRecipePage() {
                     ))}
                 </div>
               ) : (
-                // Default message
                 <div className="text-gray-500 mt-4">
                   Type in the search bar the ingredient you are looking for.
                 </div>
+              )}
+              {recipeErrors.ingredients && (
+                <p className="text-red-500 text-sm">
+                  {recipeErrors.ingredients.message}
+                </p>
               )}
 
               <div className="mt-6 text-sm text-gray-600">
