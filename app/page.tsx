@@ -7,63 +7,58 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-gray-50 text-gray-800">
       <Navbar />
 
-      {/* Main content */}
-      <main className="p-8 grid gap-8 md:grid-cols-1">
-        <div className="flex flex-col bg-gray-50 text-gray-800">
-          <h1 className="text-2xl font-bold">Good morning *user*</h1>
-          <h2 className="text-lg font-semibold">Here are your recent foods</h2>
-          <table className="w-full mt-4 table-auto border-collapse border border-gray-200">
-            <thead className="bg-gray-100">
-              <tr className="border-b">
-                <th className="p-2">Food</th>
-                <th className="p-2">Serving</th>
-                <th className="p-2">Calories</th>
-                <th className="p-2">Type</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y">
-              <tr className="hover:bg-gray-50">
-                <td className="p-2">Ex 1</td>
-                <td className="p-2">3</td>
-                <td className="p-2">100</td>
-                <td className="p-2">Breakfast</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <main className="max-w-7xl mx-auto p-8 space-y-8">
+        {/* Recent Foods */}
+        <section className="space-y-3">
+          <h1 className="text-2xl font-bold">Good morning, User</h1>
+          <h2 className="text-lg font-semibold text-gray-700">
+            Here are your recent foods
+          </h2>
+
+          <div className="bg-white border rounded-lg overflow-x-auto">
+            <table className="w-full table-auto border-collapse">
+              <thead className="bg-gray-100 text-sm">
+                <tr>
+                  <th className="p-3 text-left">Food</th>
+                  <th className="p-3 text-left">Serving</th>
+                  <th className="p-3 text-left">Calories</th>
+                  <th className="p-3 text-left">Type</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y text-sm">
+                <tr className="hover:bg-gray-50">
+                  <td className="p-3">Ex 1</td>
+                  <td className="p-3">3</td>
+                  <td className="p-3">100</td>
+                  <td className="p-3">Breakfast</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
         {/* Daily Log */}
-        <div className="flex flex-row bg-gray-50 text-gray-800 border rounded-lg p-4 md:grid-cols-1">
-          <div className="flex p-4">
-            <div className="flex flex-col m-4">
-              <h3 className="text-lg font-semibold">Breakfast</h3>
-              <div className="p-2">1000</div>
-            </div>
-            <div className="bg-gray-200 border-2 border-dashed rounded-xl w-32 h-32 m-4"></div>
-          </div>
-          <div className="flex p-4">
-            <div className="flex flex-col m-4">
-              <h3 className="text-lg font-semibold">Lunch</h3>
-              <div className="p-2">1000</div>
-            </div>
-            <div className="bg-gray-200 border-2 border-dashed rounded-xl w-32 h-32 m-4"></div>
-          </div>
+        <section className="bg-white border rounded-lg p-6">
+          <h2 className="text-lg font-semibold mb-4">Daily Log</h2>
 
-          <div className="flex p-4">
-            <div className="flex flex-col m-4">
-              <h3 className="text-lg font-semibold">Dinner</h3>
-              <div className="p-2">1000</div>
-            </div>
-            <div className="bg-gray-200 border-2 border-dashed rounded-xl w-32 h-32 m-4"></div>
-          </div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {['Breakfast', 'Lunch', 'Dinner', 'Snack'].map((meal) => (
+              <div
+                key={meal}
+                className="flex flex-col justify-between border rounded-xl p-4"
+              >
+                <div>
+                  <h3 className="font-semibold">{meal}</h3>
+                  <p className="text-sm text-gray-500 mt-1">1000 kcal</p>
+                </div>
 
-          <div className="flex p-4">
-            <div className="flex flex-col m-4">
-              <h3 className="text-lg font-semibold">Snack</h3>
-              <div className="p-2">1000</div>
-            </div>
-            <div className="bg-gray-200 border-2 border-dashed rounded-xl w-32 h-32 m-4"></div>
+                <div className="mt-4 flex items-center justify-center bg-gray-100 border-2 border-dashed rounded-lg h-28 text-sm text-gray-400">
+                  Food image
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
+        </section>
       </main>
     </div>
   );
