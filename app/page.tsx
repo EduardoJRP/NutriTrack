@@ -1,8 +1,32 @@
 'use client';
 
 import Navbar from '@/app/components/Common/Navbar';
+import { Food } from '@/app/types/foodTable';
+
+import { useEffect, useState } from 'react';
 
 export default function DashboardPage() {
+  const [recentFoods, setRecentFoods] = useState<Food[]>([]);
+
+  const fetchRecentFoods = async () => {
+    try {
+      const response = await fetch('/api/foods');
+      const data = await response.json();
+
+      if (data.success) {
+        setRecentFoods(data.foods); // <-- assumes payload is { foods: [...] }
+      } else {
+        console.error('Failed to fetch recent foods');
+      }
+    } catch (error) {
+      console.error('Error fetching recent foods:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRecentFoods();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800">
       <Navbar />
@@ -26,12 +50,22 @@ export default function DashboardPage() {
                 </tr>
               </thead>
               <tbody className="divide-y text-sm">
-                <tr className="hover:bg-gray-50">
-                  <td className="p-3">Ex 1</td>
-                  <td className="p-3">3</td>
-                  <td className="p-3">100</td>
-                  <td className="p-3">Breakfast</td>
-                </tr>
+                {recentFoods.length === 0 ? (
+                  <tr>
+                    <td colSpan={4} className="p-4 text-center text-gray-500">
+                      No recent foods yet
+                    </td>
+                  </tr>
+                ) : (
+                  recentFoods.map((food) => (
+                    <tr key={food.id} className="hover:bg-gray-50">
+                      <td className="p-3">{food.name}</td>
+                      <td className="p-3">{food.servings}</td>
+                      <td className="p-3">{food.created_by}</td>
+                      <td className="p-3 capitalize">{food.meal_type}</td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
