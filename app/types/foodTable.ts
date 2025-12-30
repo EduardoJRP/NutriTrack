@@ -6,6 +6,7 @@ export type Food = {
     is_public: boolean;
     servings: string;
     meal_type: string;
+    calories: number;
 }
 
 export type NewFoodInput = {

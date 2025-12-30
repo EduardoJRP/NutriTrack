@@ -14,7 +14,7 @@ export default function DashboardPage() {
       const data = await response.json();
 
       if (data.success) {
-        setRecentFoods(data.foods); // <-- assumes payload is { foods: [...] }
+        setRecentFoods(data.foods);
       } else {
         console.error('Failed to fetch recent foods');
       }
@@ -61,7 +61,7 @@ export default function DashboardPage() {
                     <tr key={food.id} className="hover:bg-gray-50">
                       <td className="p-3">{food.name}</td>
                       <td className="p-3">{food.servings}</td>
-                      <td className="p-3">{food.created_by}</td>
+                      <td className="p-3">{food.calories}</td>
                       <td className="p-3 capitalize">{food.meal_type}</td>
                     </tr>
                   ))
