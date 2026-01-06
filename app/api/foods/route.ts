@@ -1,4 +1,4 @@
-import {NextResponse} from 'next/server';
+import { NextResponse } from 'next/server';
 import { fetchTableFoods } from '@/app/lib/actions/fetchTableFoods';
 
 export async function GET() {

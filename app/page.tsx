@@ -13,6 +13,8 @@ export default function DashboardPage() {
       const response = await fetch('/api/foods');
       const data = await response.json();
 
+      console.log('Fetched recent foods:', data);
+
       if (data.success) {
         setRecentFoods(data.foods);
       } else {
