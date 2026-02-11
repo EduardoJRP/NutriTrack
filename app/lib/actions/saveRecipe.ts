@@ -1,10 +1,10 @@
-import { supabase } from '../supabaseClient';
+import { supabase } from '../supabase/client';
 import { recipeSchema } from '../zodSchemas/recipeSchema';
 
 export async function saveRecipe(data: unknown) {
   const parsed = recipeSchema.safeParse(data);
 
-  console.log("Parsed data:", parsed);
+  console.log('Parsed data:', parsed);
 
   if (!parsed.success) {
     return { success: false, error: parsed.error.flatten() };
@@ -17,13 +17,16 @@ export async function saveRecipe(data: unknown) {
     quantity: ingredient.quantity,
   }));
 
-  const { data: result, error } = await supabase.rpc('save_recipe_with_ingredients', {
-    _name: name,
-    _meal_type: mealType,
-    _is_public: isPublic,
-    _servings: servings,
-    _ingredient_recipe: ingredient_recipe,
-  });
+  const { data: result, error } = await supabase.rpc(
+    'save_recipe_with_ingredients',
+    {
+      _name: name,
+      _meal_type: mealType,
+      _is_public: isPublic,
+      _servings: servings,
+      _ingredient_recipe: ingredient_recipe,
+    }
+  );
 
   if (error) {
     return { success: false, error: { message: error.message } };
