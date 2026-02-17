@@ -8,8 +8,8 @@ export default function LoginPage() {
         <input id="email" name="email" type="email" required />
         <label htmlFor="password">Password:</label>
         <input id="password" name="password" type="password" required />
-        <button formAction={login}>Log in</button>
-        <button formAction={signup}>Sign up</button>
+        <button className="bg-blue-500 text-white px-4 py-2 rounded" formAction={login}>Log in</button>
+        <button className="bg-green-500 text-white px-4 py-2 rounded" formAction={signup}>Sign up</button>
       </form>
     </div>
   );
