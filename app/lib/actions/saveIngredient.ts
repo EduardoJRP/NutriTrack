@@ -1,4 +1,4 @@
-import { supabase } from '../supabaseClient';
+import { supabase } from '../supabase/client';
 import { newIngredientSchema } from '../zodSchemas/newIngredientSchema';
 
 export async function saveIngredient(data: unknown) {
