@@ -4,11 +4,13 @@ import { createClient } from '@/app/lib/supabase/client';
 import { type User } from '@supabase/supabase-js';
 import Avatar from './avatar';
 import Navbar from '../components/Common/Navbar';
+import { useRouter } from 'next/navigation';
 
 // ...
 
 export default function AccountForm({ user }: { user: User | null }) {
   const supabase = createClient();
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [fullname, setFullname] = useState<string | null>(null);
   const [username, setUsername] = useState<string | null>(null);
@@ -77,71 +79,109 @@ export default function AccountForm({ user }: { user: User | null }) {
     }
   }
 
+  async function handleSignOut() {
+    setLoading(true);
+    await supabase.auth.signOut();
+    router.push('/login');
+  }
+
   return (
     <>
-    <Navbar></Navbar>
-      <div className="form-widget">
-        <Avatar
-          uid={user?.id as string}
-          url={avatar_url}
-          size={150}
-          onUpload={(url) => {
-            setAvatarUrl(url);
-            updateProfile({ username, fullname, website, avatar_url: url });
+      <Navbar />
+      <main className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md mt-8">
+        {/* avatar section */}
+        <div className="flex justify-center mb-6">
+          <Avatar
+            uid={user?.id as string}
+            url={avatar_url}
+            size={150}
+            onUpload={(url) => {
+              setAvatarUrl(url);
+              updateProfile({ username, fullname, website, avatar_url: url });
+            }}
+          />
+        </div>
+
+        {/* form fields */}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            updateProfile({ fullname, username, website, avatar_url });
           }}
-        />
-        <div>
-          <label htmlFor="email">Email</label>
-          <input id="email" type="text" value={user?.email} disabled />
-        </div>
-        <div>
-          <label htmlFor="fullName">Full Name</label>
-          <input
-            id="fullName"
-            type="text"
-            value={fullname || ''}
-            onChange={(e) => setFullname(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="username">Username</label>
-          <input
-            id="username"
-            type="text"
-            value={username || ''}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="website">Website</label>
-          <input
-            id="website"
-            type="url"
-            value={website || ''}
-            onChange={(e) => setWebsite(e.target.value)}
-          />
-        </div>
+          className="space-y-4"
+        >
+          <div className="grid grid-cols-1 gap-4">
+            <div className="flex flex-col">
+              <label htmlFor="email" className="mb-1 font-medium">
+                Email
+              </label>
+              <input
+                id="email"
+                type="text"
+                value={user?.email ?? ''}
+                disabled
+                className="border rounded px-3 py-2 bg-gray-100"
+              />
+            </div>
 
-        <div>
-          <button
-            className="button primary block"
-            onClick={() =>
-              updateProfile({ fullname, username, website, avatar_url })
-            }
-            disabled={loading}
-          >
-            {loading ? 'Loading ...' : 'Update'}
-          </button>
-        </div>
+            <div className="flex flex-col">
+              <label htmlFor="fullName" className="mb-1 font-medium">
+                Full Name
+              </label>
+              <input
+                id="fullName"
+                type="text"
+                value={fullname || ''}
+                onChange={(e) => setFullname(e.target.value)}
+                className="border rounded px-3 py-2"
+              />
+            </div>
 
-        <div>
-          <form action="/auth/signout" method="post">
-            <button className="button block" type="submit">
+            <div className="flex flex-col">
+              <label htmlFor="username" className="mb-1 font-medium">
+                Username
+              </label>
+              <input
+                id="username"
+                type="text"
+                value={username || ''}
+                onChange={(e) => setUsername(e.target.value)}
+                className="border rounded px-3 py-2"
+              />
+            </div>
+
+            <div className="flex flex-col">
+              <label htmlFor="website" className="mb-1 font-medium">
+                Website
+              </label>
+              <input
+                id="website"
+                type="url"
+                value={website || ''}
+                onChange={(e) => setWebsite(e.target.value)}
+                className="border rounded px-3 py-2"
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
+            <button
+              type="submit"
+              className="bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700 disabled:opacity-50"
+              disabled={loading}
+            >
+              {loading ? 'Loading...' : 'Update Profile'}
+            </button>
+            <button
+              type="button"
+              className="bg-red-500 text-white rounded px-4 py-2 hover:bg-red-600"
+              onClick={handleSignOut}
+            >
               Sign out
             </button>
-          </form>
-        </div>
-      </div>
+          </div>
+        </form>
+      </main>
     </>
   );
 }
