@@ -1,14 +1,11 @@
 'use client';
 
 import Navbar from '@/app/components/Common/Navbar';
-import IngredientModal from '@/app/components/Modals/ingredientModal';
 
-import { saveIngredient } from '@/app/lib/actions/saveIngredient';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
-import { NewIngredientInput } from '@/app/lib/zodSchemas/newIngredientSchema';
 import { UserIngredientType } from '@/app/lib/zodSchemas/userIngredientSchema';
 import { recipeSchema, RecipeInput } from '@/app/lib/zodSchemas/recipeSchema';
 import { saveRecipe } from '@/app/lib/actions/saveRecipe';
@@ -41,7 +38,6 @@ export default function NewRecipePage() {
   };
 
   const [search, setSearch] = useState('');
-  const [showModal, setShowModal] = useState(false);
   const [ingredients, setIngredients] = useState<ingredientType[]>([]);
 
   const filteredIngredients = ingredients.filter((ingredient) =>
@@ -99,21 +95,6 @@ export default function NewRecipePage() {
         quantity: '0',
       }))
     );
-  };
-
-  const handleSaveIngredient: SubmitHandler<NewIngredientInput> = async (
-    data
-  ) => {
-    const result = await saveIngredient(data);
-
-    if (!result.success) {
-      console.error(result.error);
-      alert('Failed to save ingredient. Please check your input.');
-      return;
-    }
-
-    await fetchIngredients();
-    setShowModal(false);
   };
 
   const handleSaveRecipe = async (data: RecipeInput) => {
@@ -340,20 +321,6 @@ export default function NewRecipePage() {
                   {recipeErrors.ingredients.message}
                 </p>
               )}
-
-              <div className="mt-6 text-sm text-gray-600">
-                Not seeing the ingredient you&apos;re looking for?{' '}
-                <span
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => setShowModal(true)}
-                  onKeyDown={(e) => e.key === 'Enter' && setShowModal(true)}
-                  className="text-blue-500 underline cursor-pointer hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded"
-                >
-                  Add it here
-                </span>
-                .
-              </div>
             </div>
           </div>
           <div className="mt-8 flex gap-4 justify-end">
@@ -376,23 +343,6 @@ export default function NewRecipePage() {
           </div>
         </form>
       </main>
-
-      <IngredientModal
-        isOpen={showModal}
-        onSubmit={handleSaveIngredient}
-        onClose={() => {
-          setShowModal(false);
-        }}
-        defaultValues={{
-          name: '',
-          quantity: 100,
-          measurement: 'g',
-          calories: 0,
-          carbohydrates: 0,
-          proteins: 0,
-          fats: 0,
-        }}
-      />
     </>
   );
 }
