@@ -8,7 +8,8 @@ import { useForm } from 'react-hook-form';
 
 import { UserIngredientType } from '@/app/lib/zodSchemas/userIngredientSchema';
 import { recipeSchema, RecipeInput } from '@/app/lib/zodSchemas/recipeSchema';
-import { saveRecipe } from '@/app/lib/actions/saveRecipe';
+import { saveRecipe } from '@/app/recipes/new/actions';
+import { redirect } from 'next/navigation';
 
 type ingredientType = Omit<UserIngredientType, 'quantity'> & {
   quantity: string;
@@ -110,10 +111,7 @@ export default function NewRecipePage() {
         }),
     };
 
-    console.log('Recipe Data to be saved:', recipeData);
-
     const result = await saveRecipe(recipeData);
-
     if (!result.success) {
       console.error(result.error);
       alert('Failed to save recipe. Please check your input.');
@@ -336,6 +334,7 @@ export default function NewRecipePage() {
               onClick={() => {
                 resetRecipe();
                 setIngredients([]);
+                redirect('/recipes');
               }}
             >
               cancel

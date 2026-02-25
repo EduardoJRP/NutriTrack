@@ -1,5 +1,5 @@
-import { supabase } from '../supabase/client';
-import { recipeSchema } from '../zodSchemas/recipeSchema';
+import { createClient } from '../../lib/supabase/client';
+import { recipeSchema } from '../../lib/zodSchemas/recipeSchema';
 
 export async function saveRecipe(data: unknown) {
   const parsed = recipeSchema.safeParse(data);
@@ -12,19 +12,15 @@ export async function saveRecipe(data: unknown) {
 
   const { name, mealType, isPublic, servings, ingredients } = parsed.data;
 
-  const ingredient_recipe = ingredients.map((ingredient) => ({
-    id: ingredient.id,
-    quantity: ingredient.quantity,
-  }));
 
-  const { data: result, error } = await supabase.rpc(
-    'save_recipe_with_ingredients',
+  const { data: result, error } = await createClient().rpc(
+    'save_recipe',
     {
       _name: name,
       _meal_type: mealType,
       _is_public: isPublic,
       _servings: servings,
-      _ingredient_recipe: ingredient_recipe,
+      _ingredients: ingredients,
     }
   );
 
